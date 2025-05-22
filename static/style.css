@@ -5,3 +5,27 @@
 .player-search {
   margin-bottom: 15px;
 }
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+}
+
+table {
+  width: 100%;
+}
+
+td {
+  text-align: center;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}

@@ -1,24 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>HistoBowl</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/players">Players</a>
-        <a href="/tournaments">Tournaments</a>
-        <a href="/about">About</a>
-    </nav>
+{% extends "base.html" %}
 
-    <main>
-        <h1>Welcome to HistoBowl!</h1>
-        <form action="/search" method="get">
-            <input type="text" size="50" name="q" placeholder="Search players, matches, tournaments...">
-            <button type="submit">Search</button>
-        </form>
-    </main>
-</body>
-</html>
+{% block title %}About{% endblock %}
+
+{% block content %}
+    <h1>Welcome to HistoBowl!</h1>
+    <form action="/search" method="get">
+        <input type="text" size="50" name="q" placeholder="Search players, matches, tournaments...">
+        <button type="submit">Search</button>
+    </form>
+{% endblock %}
