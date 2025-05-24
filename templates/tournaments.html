@@ -4,5 +4,44 @@
 
 {% block content %}
     <h1>Tournaments</h1>
-    <p>This page will eventually show a list of all tournaments.</p>
+    <form action="{{ url_for('tournaments') }}" method="get">
+        <label for="season">Choose a season:</label>
+        <select name="season" id="season" onchange="this.form.submit()">
+            {% for s in seasons %}
+                <option value="{{ s }}" {% if selected_season == s %}selected{% endif %}>
+                    {{ s }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Airdate</th>
+                <th>Preliminary Dates</th>
+                <th>Location</th>
+                <th>Oil Pattern</th>
+                <th>Winner</th>
+                <th>Prize Money</th>
+            </tr>
+        </thead>
+        {% for t in tournaments %}
+        <tbody>
+            <tr>
+                <td>
+                    <a href="{{ url_for('tournament_details', tournament_id=t[0]) }}">
+                        {{ t[1] }}
+                    </a>
+                </td>
+                <td>{{ t[2] }}</td>
+                <td>{{ t[3] }}</td>
+                <td>{{ t[4] }}</td>
+                <td>{{ t[5] }}</td>
+                <td>{{ t[6] }}</td>
+                <td>{{ t[7] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
