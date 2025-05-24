@@ -47,6 +47,10 @@ def tournament_details(tournament_id):
     con.close()
     return render_template("tournament_details.html", tournament=tournament)
 
+@app.route("/tournament_input")
+def tournament_input():
+    return render_template("tournament_input.html")
+
 @app.route("/about")
 def about():
     return render_template("about.html")
