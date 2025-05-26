@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'LFP Light';
+  src: url('fonts/LFP Light.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 ::placeholder {
   text-align: center;
 }
@@ -27,10 +34,7 @@ td {
 }
 
 body {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+  font-family: 'LFP Light', sans-serif;
 }
 
 form {
