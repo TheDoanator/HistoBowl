@@ -1,8 +1,9 @@
 @font-face {
-  font-family: 'LFP Light';
-  src: url('fonts/LFP Light.ttf') format('ttf');
-  font-weight: normal;
+  font-family: 'Commissioner';
+  src: url('fonts/Commissioner.woff2') format('woff2-variations');
+  font-weight: 100 900;
   font-style: normal;
+  font-display: swap;
 }
 
 ::placeholder {
@@ -34,11 +35,20 @@ td {
 }
 
 body {
-  font-family: 'LFP Light', sans-serif;
+  font-family: 'Commissioner', sans-serif;
+  font-weight: 400;
 }
 
 form {
   margin-bottom: 20px;
+}
+
+nav {
+  text-align: center;
+}
+
+a {
+
 }
 
 .stepladder-grid {
