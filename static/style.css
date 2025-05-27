@@ -14,29 +14,25 @@
   margin-bottom: 15px;
 }
 
-table,
-th,
-td {
-  border: 1px solid black;
+table {
+  width: 85%;
+  margin: 0.5rem auto 0 auto;
   border-collapse: collapse;
+  text-align: center;
+  border: 1px solid black;
+
 }
 
 th,
 td {
   padding: 10px;
-}
-
-table {
-  width: 100%;
-}
-
-td {
-  text-align: center;
+  border: 1px solid black;
 }
 
 body {
   font-family: 'Commissioner', sans-serif;
   font-weight: 400;
+  text-align: center;
 }
 
 form {
@@ -48,6 +44,21 @@ nav {
   justify-content: center;
   gap: 2rem;
   margin-top: 1rem;
+}
+
+input, button {
+  font-family: inherit;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #777;
+
+}
+
+h1 {
+  text-align: center;
 }
 
 .stepladder-grid {
