@@ -4,12 +4,10 @@
 
 {% block content %}
     <h1>Players</h1>
-    <div class="player-search">
-        <form action="/search" method="get">
-            <input type="text" size="25" name="q" placeholder="Search players...">
-            <button type="submit">Search</button>
-        </form>
-    </div>
+    <form action="/search" method="get">
+        <input type="text" size="25" name="q" placeholder="Search players...">
+        <button type="submit">Search</button>
+    </form>
     <div class="alphabet-nav">
         <button class="alphabet-button">A</button>
         <button class="alphabet-button">B</button>
