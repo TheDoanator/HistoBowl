@@ -4,4 +4,31 @@
 
 {% block content %}
 <h1>Tournament Data Input Page</h1>
+<form method="POST" action="/add-tournament">
+  <label for="event">Event Name:</label><br>
+  <input type="text" id="event" name="event" required><br><br>
+
+  <label for="airdate">Airdate:</label><br>
+  <input type="text" id="airdate" name="airdate"><br><br>
+
+  <label for="prelim_dates">Prelim Dates:</label><br>
+  <input type="text" id="prelim_dates" name="prelim_dates"><br><br>
+
+  <label for="city">City:</label><br>
+  <input type="text" id="city" name="city"><br><br>
+
+  <label for="oil">Oil Pattern:</label><br>
+  <input type="text" id="oil" name="oil"><br><br>
+
+  <label for="winner">Winner:</label><br>
+  <input type="text" id="winner" name="winner"><br><br>
+
+  <label for="prize_money">Prize Money:</label><br>
+  <input type="text" id="prize_money" name="prize_money"><br><br>
+
+  <label for="season">Season:</label><br>
+  <input type="text" id="season" name="season"><br><br>
+
+  <button type="submit">Submit Tournament</button>
+</form>
 {% endblock %}

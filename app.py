@@ -1,5 +1,5 @@
+from flask import Flask, request, render_template, redirect, url_for
 import sqlite3
-from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -44,16 +44,88 @@ def tournament_details(tournament_id):
     cur = con.cursor()
     cur.execute("SELECT * FROM tournaments WHERE id = ?", (tournament_id,))
     tournament = cur.fetchone()
+    cur.execute("""
+        SELECT match_number, player1_name, player1_seed, player1_score,
+               player2_name, player2_seed, player2_score
+        FROM matches
+        WHERE tournament_id = ?
+        ORDER BY match_number
+    """, (tournament_id,))
+    matches = cur.fetchall()
     con.close()
-    return render_template("tournament_details.html", tournament=tournament)
+    return render_template("tournament_details.html", tournament=tournament, matches=matches)
 
 @app.route("/tournament_input")
 def tournament_input():
     return render_template("tournament_input.html")
 
+@app.route("/add-tournament", methods=["GET", "POST"])
+def add_tournament():
+    if request.method == "POST":
+        # Get form data
+        event = request.form["event"]
+        airdate = request.form["airdate"]
+        prelim_dates = request.form["prelim_dates"]
+        city = request.form["city"]
+        oil = request.form["oil"]
+        winner = request.form["winner"]
+        prize_money = request.form["prize_money"]
+        season = request.form["season"]
+
+        # Insert into database
+        con = sqlite3.connect("histobowl.db")
+        cur = con.cursor()
+        cur.execute("""
+            INSERT INTO tournaments (event, airdate, prelim_dates, city, oil, winner, prize_money, season)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (event, airdate, prelim_dates, city, oil, winner, prize_money, season))
+        con.commit()
+        con.close()
+        # Redirect after submit
+        return redirect(url_for("add_tournament"))
+    return render_template("add_tournament.html")
+
 @app.route("/match_input")
 def match_input():
     return render_template("match_input.html")
+
+@app.route("/add-match", methods=["GET", "POST"])
+def add_match():
+    if request.method == "POST":
+        # Get form data
+        tournament_id = request.form["tournament_id"]
+        match_number = request.form["match_number"]
+        player1_name = request.form["player1_name"]
+        player1_seed = request.form["player1_seed"]
+        player1_score = request.form["player1_score"]
+        player2_name = request.form["player2_name"]
+        player2_seed = request.form["player2_seed"]
+        player2_score = request.form["player2_score"]
+        winner_name = request.form["winner_name"]
+
+        # Insert into database
+        con = sqlite3.connect("histobowl.db")
+        cur = con.cursor()
+        cur.execute("""
+            INSERT INTO matches (
+                tournament_id, match_number,
+                player1_name, player1_seed, player1_score,
+                player2_name, player2_seed, player2_score,
+                winner_name
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            tournament_id, match_number,
+            player1_name, player1_seed, player1_score,
+            player2_name, player2_seed, player2_score,
+            winner_name
+        ))
+        con.commit()
+        con.close()
+
+        # Redirect after submit
+        return redirect(url_for("add_match"))
+
+    return render_template("add_match.html")
 
 @app.route("/about")
 def about():
