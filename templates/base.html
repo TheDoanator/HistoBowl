@@ -2,6 +2,22 @@
 <html lang="en">
 
 <head>
+    <script>
+        // Set dark mode on load if it was previously enabled
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.documentElement.classList.add("dark-mode");
+        }
+
+        function darkModeToggle() {
+            document.documentElement.classList.toggle("dark-mode");
+            // Save preference
+            if (document.documentElement.classList.contains("dark-mode")) {
+                localStorage.setItem("darkMode", "enabled");
+            } else {
+                localStorage.setItem("darkMode", "disabled");
+            }
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
@@ -18,6 +34,7 @@
             <a href="/tournament_input">Tournament Data Input</a>
             <a href="/match_input">Match Data Input</a>
             <a href="/about">About</a>
+            <button onclick="darkModeToggle()">Toggle dark mode</button>
         </nav>
         <main>
             {% block content %}{% endblock %}
@@ -32,4 +49,5 @@
         </footer>
     </div>
 </body>
+
 </html>

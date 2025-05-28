@@ -6,8 +6,39 @@
   font-display: swap;
 }
 
-::placeholder {
+body {
+  font-family: 'Commissioner', sans-serif;
+  font-weight: 400;
   text-align: center;
+}
+
+html,
+body {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+html.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
+html.dark-mode table,
+html.dark-mode th,
+html.dark-mode td {
+  border-color: white;
+}
+
+html.dark-mode nav a {
+  color: white;
+}
+
+html.dark-mode .match {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+nav a {
+  color: black;
 }
 
 table {
@@ -23,12 +54,6 @@ th,
 td {
   padding: 10px;
   border: 1px solid black;
-}
-
-body {
-  font-family: 'Commissioner', sans-serif;
-  font-weight: 400;
-  text-align: center;
 }
 
 form {
@@ -112,4 +137,8 @@ h1 {
 
 .player-score {
   text-align: right;
+}
+
+::placeholder {
+  text-align: center;
 }
