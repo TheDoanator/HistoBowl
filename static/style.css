@@ -6,6 +6,11 @@
   font-display: swap;
 }
 
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 body {
   font-family: 'Commissioner', sans-serif;
   font-weight: 400;
@@ -54,6 +59,10 @@ th,
 td {
   padding: 10px;
   border: 1px solid black;
+}
+
+th {
+  font-size: 20px
 }
 
 form {
@@ -137,6 +146,18 @@ h1 {
 
 .player-score {
   text-align: right;
+}
+
+.error {
+  font-size: larger;
+  font-weight: 800;
+  color: red;
+  padding: 5rem 0px;
+  animation: fadeIn 1s;
+}
+
+.title {
+  animation: fadeIn 2s;
 }
 
 ::placeholder {

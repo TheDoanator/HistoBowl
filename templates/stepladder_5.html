@@ -1,0 +1,23 @@
+<div class="stepladder-grid">
+  {% for match in matches %}
+    <div class="match-container match{{ match[0] }}">
+      <div class="match-label">
+        {% if match[0] == 4 %}
+          CHAMPIONSHIP MATCH
+        {% else %}
+          MATCH {{ match[0] }}
+        {% endif %}
+      </div>
+      <div class="match">
+        <div class="player-row">
+          <span class="player-left">{{ match[2] }} {{ match[1] }}</span>
+          <span class="player-score">{{ match[3] }}</span>
+        </div>
+        <div class="player-row">
+          <span class="player-left">{{ match[5] }} {{ match[4] }}</span>
+          <span class="player-score">{{ match[6] }}</span>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>

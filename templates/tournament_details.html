@@ -9,27 +9,9 @@
 <p><strong>Oil Pattern:</strong> {{ tournament[5] }}</p>
 <p><strong>Winner:</strong> {{ tournament[6] }}</p>
 <p><strong>Prize Money:</strong> {{ tournament[7] }}</p>
-<div class="stepladder-grid">
-  {% for match in matches %}
-    <div class="match-container match{{ match[0] }}">
-      <div class="match-label">
-        {% if match[0] == 4 %}
-          CHAMPIONSHIP MATCH
-        {% else %}
-          MATCH {{ match[0] }}
-        {% endif %}
-      </div>
-      <div class="match">
-        <div class="player-row">
-          <span class="player-left">{{ match[2] }} {{ match[1] }}</span>
-          <span class="player-score">{{ match[3] }}</span>
-        </div>
-        <div class="player-row">
-          <span class="player-left">{{ match[5] }} {{ match[4] }}</span>
-          <span class="player-score">{{ match[6] }}</span>
-        </div>
-      </div>
-    </div>
-  {% endfor %}
-</div>
+{% if tournament[9] == "stepladder-5" %}
+  {% include "stepladder_5.html" %}
+{% else %}
+  <p class="error">Match format not supported yet.</p>
+{% endif %}
 {% endblock %}

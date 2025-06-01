@@ -71,6 +71,7 @@ def add_tournament():
         winner = request.form["winner"]
         prize_money = request.form["prize_money"]
         season = request.form["season"]
+        format = request.form["format"]
 
         # Insert into database
         con = sqlite3.connect("histobowl.db")
@@ -84,6 +85,10 @@ def add_tournament():
         # Redirect after submit
         return redirect(url_for("add_tournament"))
     return render_template("add_tournament.html")
+
+@app.route("/stepladder_5")
+def stepladder_5():
+    return render_template("stepladder_5.html")
 
 @app.route("/match_input")
 def match_input():
