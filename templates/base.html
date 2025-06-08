@@ -26,13 +26,16 @@
 </head>
 
 <body>
+    <div class="alpha-banner">
+        🚧 HistoBowl is in early alpha — many features are incomplete or missing. Expect updates soon!
+    </div>
     <div class="page-wrapper">
         <nav>
             <a href="/">Home</a>
             <a href="/players">Players</a>
             <a href="/tournaments">Tournaments</a>
-            <a href="/tournament_input">Tournament Data Input</a>
-            <a href="/match_input">Match Data Input</a>
+            <!-- <a href="/tournament_input">Tournament Data Input</a>
+            <a href="/match_input">Match Data Input</a> -->
             <a href="/about">About</a>
             <button onclick="darkModeToggle()">Toggle dark mode</button>
         </nav>
@@ -40,6 +43,7 @@
             {% block content %}{% endblock %}
         </main>
         <footer>
+            <p class="footer-note">HistoBowl is in early alpha. This is a minimal prototype under active development.</p>
             <p>&copy; 2025 HistoBowl. All rights reserved.</p>
             <p>
                 Built by Kevin Doan •

@@ -7,8 +7,13 @@
 }
 
 @keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 body {
@@ -76,7 +81,8 @@ nav {
   margin-top: 1rem;
 }
 
-input, button {
+input,
+button {
   font-family: inherit;
 }
 
@@ -115,19 +121,26 @@ h1 {
   margin-bottom: 2px;
 }
 
-.match1 {
+.match1,
+.match5 {
   grid-column: 1;
   grid-row: 4;
 }
-.match2 {
+
+.match2,
+.match6 {
   grid-column: 2;
   grid-row: 3;
 }
-.match3 {
+
+.match3,
+.match7 {
   grid-column: 3;
   grid-row: 2;
 }
-.match4 {
+
+.match4,
+.match8 {
   grid-column: 4;
   grid-row: 1;
 }
@@ -138,6 +151,12 @@ h1 {
   padding: 2px 8px;
   font-weight: bold;
   color: white;
+}
+
+.rolloff {
+  justify-content: space-between;
+  padding: 2px 8px;
+  font-weight: bold;
 }
 
 .player-left {
@@ -158,6 +177,23 @@ h1 {
 
 .title {
   animation: fadeIn 2s;
+}
+
+.alpha-banner {
+  background-color: #ffeeba;
+  color: #856404;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-bottom: 2px solid #ffc107;
+}
+
+.footer-note {
+  color: #aaa;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: 40px;
 }
 
 ::placeholder {

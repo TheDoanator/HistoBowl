@@ -1,8 +1,29 @@
+<h2>Day 1</h2>
 <div class="stepladder-grid">
   {% for match in matches[:4] %}
     <div class="match-container match{{ match[0] }}">
       <div class="match-label">
-        {% if match[0] == 4 %}
+        MATCH {{ match[0] }}
+      </div>
+      <div class="match">
+        <div class="player-row">
+          <span class="player-left">{{ match[2] }} {{ match[1] }}</span>
+          <span class="player-score">{{ match[3] }}</span>
+        </div>
+        <div class="player-row">
+          <span class="player-left">{{ match[5] }} {{ match[4] }}</span>
+          <span class="player-score">{{ match[6] }}</span>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+<h2>Day 2</h2>
+<div class="stepladder-grid">
+  {% for match in matches[4:8] %}
+    <div class="match-container match{{ match[0] }}">
+      <div class="match-label">
+        {% if match[0] == 8 %}
           CHAMPIONSHIP MATCH
         {% else %}
           MATCH {{ match[0] }}
@@ -18,11 +39,6 @@
           <span class="player-score">{{ match[6] }}</span>
         </div>
       </div>
-      {% if match[3] == match[6] %}
-        {% for rolloff in matches if rolloff[7] == 1 and rolloff[9] == match[8] %}
-        <span class="rolloff">Rolloff: {{ rolloff[10] }} wins {{ rolloff[3]}}-{{rolloff[6] }}</span>
-        {% endfor %}
-      {% endif %}
     </div>
   {% endfor %}
 </div>

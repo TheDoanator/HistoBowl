@@ -46,7 +46,7 @@ def tournament_details(tournament_id):
     tournament = cur.fetchone()
     cur.execute("""
         SELECT match_number, player1_name, player1_seed, player1_score,
-               player2_name, player2_seed, player2_score
+               player2_name, player2_seed, player2_score, is_rolloff, id, parent_match_id, winner_name
         FROM matches
         WHERE tournament_id = ?
         ORDER BY match_number
@@ -77,9 +77,9 @@ def add_tournament():
         con = sqlite3.connect("histobowl.db")
         cur = con.cursor()
         cur.execute("""
-            INSERT INTO tournaments (event, airdate, prelim_dates, city, oil, winner, prize_money, season)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (event, airdate, prelim_dates, city, oil, winner, prize_money, season))
+            INSERT INTO tournaments (event, airdate, prelim_dates, city, oil, winner, prize_money, season, format)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (event, airdate, prelim_dates, city, oil, winner, prize_money, season, format))
         con.commit()
         con.close()
         # Redirect after submit

@@ -11,7 +11,9 @@
 <p><strong>Prize Money:</strong> {{ tournament[7] }}</p>
 {% if tournament[9] == "stepladder-5" %}
   {% include "stepladder_5.html" %}
+{% elif tournament[9] == "stepladder-9" %}
+  {% include "stepladder_9.html" %}
 {% else %}
-  <p class="error">Match format not supported yet.</p>
+  <p class="error">Tournament format not yet supported.</p>
 {% endif %}
 {% endblock %}
