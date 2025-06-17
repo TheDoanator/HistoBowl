@@ -29,11 +29,12 @@
         {% for t in tournaments %}
         <tbody>
             <tr>
-                <td>
+                <td>{{ t[1] }}</td>
+                <!-- <td>
                     <a href="{{ url_for('tournament_details', tournament_id=t[0]) }}">
                         {{ t[1] }}
                     </a>
-                </td>
+                </td> -->
                 <!-- <td>{{ t[2] }}</td> -->
                 <td>{{ t[3] }}</td>
                 <td>{{ t[4] }}</td>
