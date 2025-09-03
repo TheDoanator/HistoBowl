@@ -30,6 +30,13 @@ Planned enhancements include:
 <img width="607" height="297" alt="image" src="https://github.com/user-attachments/assets/dc191cb1-e171-427a-b621-f6f990061d91" />
 <img width="2211" height="715" alt="image" src="https://github.com/user-attachments/assets/c9b0d062-8827-4c8f-ae99-c8421aa0f7c7" />
 
+## Why I Built This ##
+The Professional Bowlers Association once hosted a full archive of standings, but since 2020 their official records have disappeared behind a placeholder page. Today, the only way to find much of bowling’s history is through the Wayback Machine, scattered Wikipedia entries, or outdated fan sites.
+
+As both a lifelong bowler and a former bowling content creator, I wanted to change that. HistoBowl is my attempt to create the only living, complete archive of professional bowling history, one that’s modern, searchable, and built to last.
+
+This project also reflects my career path in computer science: combining web development, databases, and my passion for bowling into what I hope will become both a comprehensive resource for fans and my largest portfolio project to date.
+
 ## Tech Stack ##
 - **Backend**: Python (Flask)
 - **Database**: SQLite
@@ -40,10 +47,3 @@ Planned enhancements include:
 - Professional Bowlers Association (archived standings)
 - Wikipedia
 - Various news outlets for historical prize money
-
-## Why I Built This ##
-The Professional Bowlers Association once hosted a full archive of standings, but since 2020 their official records have disappeared behind a placeholder page. Today, the only way to find much of bowling’s history is through the Wayback Machine, scattered Wikipedia entries, or outdated fan sites.
-
-As both a lifelong bowler and a former bowling content creator, I wanted to change that. HistoBowl is my attempt to create the only living, complete archive of professional bowling history, one that’s modern, searchable, and built to last.
-
-This project also reflects my career path in computer science: combining web development, databases, and my passion for bowling into what I hope will become both a comprehensive resource for fans and my largest portfolio project to date.
