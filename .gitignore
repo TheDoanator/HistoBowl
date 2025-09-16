@@ -9,3 +9,6 @@ venv/
 
 # Ignore production-set environment variables
 .env
+
+# Ignore __pychache__/
+__pycache__/

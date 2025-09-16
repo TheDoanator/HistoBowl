@@ -4,7 +4,7 @@
 
 {% block content %}
     <h1>Tournaments</h1>
-    <form action="{{ url_for('tournaments') }}" method="get">
+    <form action="{{ url_for('main.tournaments') }}" method="get">
         <label for="season">Choose a season:</label>
         <select name="season" id="season" onchange="this.form.submit()">
             {% for s in seasons %}
@@ -31,7 +31,7 @@
             <tr>
                 <td>{{ t[1] }}</td>
                 <!-- <td>
-                    <a href="{{ url_for('tournament_details', tournament_id=t[0]) }}">
+                    <a href="{{ url_for('main.tournament_details', tournament_id=t[0]) }}">
                         {{ t[1] }}
                     </a>
                 </td> -->
