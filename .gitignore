@@ -6,3 +6,6 @@ venv/
 
 # Ignore macOS proprietary file
 .DS_Store
+
+# Ignore production-set environment variables
+.env

@@ -1,5 +1,20 @@
-from flask import Flask, request, render_template, redirect, url_for
-import sqlite3
+from flask import Flask, request, render_template
+from dotenv import load_dotenv
+
+import sqlite3, os, sys
+
+load_dotenv()
+
+DB_PATH = os.getenv("HISTOBOWL_DB_PATH")
+if not DB_PATH:
+    sys.stderr.write(
+        "[HistoBowl] HISTOBOWL_DB_PATH is not set. "
+        "For safety, this app does not ship a database. "
+        "Set HISTOBOWL_DB_PATH to your local/prod DB file.\n"
+    )
+    sys.exit(1)
+
+print(f"DB_PATH is: {DB_PATH}")
 
 app = Flask(__name__)
 
@@ -21,7 +36,7 @@ def home():
 
 @app.route("/players")
 def players():
-    con = sqlite3.connect("histobowl.db")
+    con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
     cur.execute("SELECT * FROM players")
     players = cur.fetchall()
@@ -31,8 +46,10 @@ def players():
 @app.route("/tournaments")
 def tournaments():
     season = request.args.get("season", default="2025")
-    con = sqlite3.connect("histobowl.db")
+    con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
+    cur.execute('PRAGMA database_list;')
+    print("[HistoBowl] Active DBs:", cur.fetchall())
     cur.execute("SELECT * FROM tournaments WHERE season = ?", (season,))
     tournaments = cur.fetchall()
     con.close()
@@ -40,7 +57,7 @@ def tournaments():
 
 @app.route("/tournament/<int:tournament_id>")
 def tournament_details(tournament_id):
-    con = sqlite3.connect("histobowl.db")
+    con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
     cur.execute("SELECT * FROM tournaments WHERE id = ?", (tournament_id,))
     tournament = cur.fetchone()
