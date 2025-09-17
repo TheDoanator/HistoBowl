@@ -1,9 +1,6 @@
 # Ignore virtual environment
 venv/
 
-# Ignore SQLite databases
-*.db
-
 # Ignore macOS proprietary file
 .DS_Store
 
