@@ -3,7 +3,7 @@ import sqlite3
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # just in case it's not loaded yet
+load_dotenv()
 
 def get_db():
     path = os.getenv("HISTOBOWL_DB_PATH")
