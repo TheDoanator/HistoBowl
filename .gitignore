@@ -9,3 +9,6 @@ venv/
 
 # Ignore __pychache__/
 __pycache__/
+
+# Ignore production DB
+histobowl.db
