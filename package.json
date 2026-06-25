@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  },
+"scripts": {
+    "frontend": "cd frontend && npm run dev",
+    "backend": "cd backend && node index.js",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\""
+  }
+}
