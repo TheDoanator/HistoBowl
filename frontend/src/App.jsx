@@ -1,5 +1,5 @@
 import './App.css'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Construction, Sun, Moon } from 'lucide-react'; 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import our router tools
 import Home from './pages/Home'; // Import our new home brick
@@ -107,7 +107,7 @@ function BroadcastTicker() {
           ))}
         </div>
       </div>
-      <div className="hidden md:flex bg-slate-900 dark:bg-black px-4 h-full items-center border-l border-slate-800 text-[10px] font-mono text-slate-500">v0.4.1-ALPHA</div>
+      <div className="hidden md:flex bg-slate-900 dark:bg-black px-4 h-full items-center border-l border-slate-800 text-[10px] font-mono text-slate-500">v0.4.2-ALPHA</div>
     </footer>
   );
 }

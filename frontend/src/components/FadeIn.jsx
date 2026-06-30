@@ -10,7 +10,7 @@ function FadeIn({ children }) {
 
   return (
     <div
-      className={`transition-all duration-1250 ease-out transform ${
+      className={`transition-all duration-500 ease-out transform ${
         isVisible 
           ? 'opacity-100 blur-none translate-y-0' 
           : 'opacity-0 blur-md translate-y-2'
