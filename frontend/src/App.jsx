@@ -57,9 +57,9 @@ function App() {
 function BroadcastTicker() {
   const newsItems = [
     'HistoBowl enters alpha stages of development',
-    'HistoBowl receives revamped design',
-    'Doan states that HistoBowl is once again in active development',
-    'All basic tournament data soon to be available'
+    'Tackett accomplishes 4th straight World Championship',
+    'Storm clinches 2026 PBA Elite League: Battle of the Brands',
+    'Kent wins inaugural Norm Duke Open'
   ];
 
   return (
