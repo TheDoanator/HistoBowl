@@ -1,64 +1,56 @@
 import './App.css'
-import { Construction } from 'lucide-react'; // Import standard icons
+import { Construction } from 'lucide-react'; 
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import our router tools
+import Home from './pages/Home'; // Import our new home brick
+import Tournaments from './pages/Tournaments'; // Import our new tournaments brick
 
 function App() {
   return (
-    <div>
+    // 1. Wrap everything in BrowserRouter so routing works across the whole app
+    <BrowserRouter>
+      <div>
 
-      <div className='w-full'>
-        <div className='bg-amber-100 py-2 text-center text-xs font-medium text-amber-800 flex items-center justify-center gap-1'>
-          <Construction className="w-3 h-3" />
-          <span>HistoBowl is in alpha. Many features are incomplete or missing. Expect updates soon!</span>
-        </div>
-      </div>
-
-      <nav className="border-b bg-white/80 border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
-          
-          <span className="text-xl font-black italic tracking-tighter cursor-pointer select-none">
-            HISTOBOWL
-          </span>
-
-          <div className="flex items-center space-x-8">
-            <button className="text-sm font-black italic tracking-wide uppercase">HOME</button>
-            <button className="text-sm font-black italic tracking-wide uppercase">TOURNAMENTS</button>
+        {/* Global Banner */}
+        <div className='w-full'>
+          <div className='bg-amber-100 py-2 text-center text-xs font-medium text-amber-800 flex items-center justify-center gap-1'>
+            <Construction className="w-3 h-3" />
+            <span>HistoBowl is in alpha. Many features are incomplete or missing. Expect updates soon!</span>
           </div>
-
         </div>
-      </nav>
 
-      <div className="flex items-center justify-center flex-1 flex-col mt-12">
-        {/* 1. Main Title Text */}
-        <h1 className="text-6xl font-black italic tracking-tight">
-          THIS IS
-        </h1>
-        
-        {/* 2. Gradient Branding Text */}
-        <h2 className="text-8xl font-black italic tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-cyan-500 -mt-2">
-          HISTOBOWL.
-        </h2>
-        
-        {/* 3. Subtitle / Description */}
-        <p className="text-xl text-slate-600 font-medium text-center">
-          The most comprehensive database for professional bowling statistics and match results.
-        </p>
-        
-        {/* 4. Search Box Container */}
-        <div className="w-full max-w-2xl relative group mt-10">
-          <input 
-            type="text" 
-            placeholder="Search players, matches, tournaments..." 
-            className="w-full px-6 py-4 text-lg rounded-xl bg-white border border-slate-200 shadow-xl outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-          />
-          <button className="absolute right-2 top-2 bottom-2 px-6 bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase italic tracking-wider rounded-lg transition-colors flex items-center gap-2 cursor-pointer">
-            <span className="hidden sm:inline">Search</span>
-          </button>
-        </div>
+        {/* Global Navbar */}
+        <nav className="border-b bg-white/80 border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
+            
+            {/* Clicking the Logo takes you Home */}
+            <Link to="/" className="text-xl font-black italic tracking-tighter cursor-pointer select-none">
+              HISTOBOWL
+            </Link>
+
+            {/* Replaced standard <button> with <Link> */}
+            <div className="flex items-center space-x-8">
+              <Link to="/" className="text-sm font-black italic tracking-wide uppercase hover:text-blue-600 transition-colors">
+                HOME
+              </Link>
+              <Link to="/tournaments" className="text-sm font-black italic tracking-wide uppercase hover:text-blue-600 transition-colors">
+                TOURNAMENTS
+              </Link>
+            </div>
+
+          </div>
+        </nav>
+
+        {/* Dynamic Section */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tournaments" element={<Tournaments />} />
+        </Routes>
+
+        {/* Global Scrolling Ticker*/}
+        <BroadcastTicker/>
+
       </div>
-
-      <BroadcastTicker/>
-
-    </div>
+    </BrowserRouter>
   );
 }
 
@@ -67,7 +59,7 @@ function BroadcastTicker() {
     'HistoBowl enters alpha stages of development',
     'HistoBowl receives revamped design',
     'Doan states that HistoBowl is once again in active development',
-    'All basic tournament data is available'
+    'All basic tournament data soon to be available'
   ];
 
   return (
@@ -82,10 +74,9 @@ function BroadcastTicker() {
           ))}
         </div>
       </div>
-      <div className="hidden md:flex bg-slate-900 px-4 h-full items-center border-l border-slate-800 text-[10px] font-mono text-slate-500">v0.4.0-ALPHA</div>
+      <div className="hidden md:flex bg-slate-900 px-4 h-full items-center border-l border-slate-800 text-[10px] font-mono text-slate-500">v0.4.1-ALPHA</div>
     </footer>
   );
 }
 
-
-export default App
+export default App;
