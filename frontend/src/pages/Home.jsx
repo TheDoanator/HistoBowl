@@ -3,7 +3,7 @@ import FadeIn from '../components/FadeIn';
 function Home() {
   return (
     <FadeIn>
-      <div className="flex items-center justify-center flex-1 flex-col mt-12">
+      <div className="flex items-center justify-center flex-1 flex-col mt-16 max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 text-center">
         {/* 1. Main Title Text */}
         <h1 className="text-6xl font-black italic tracking-tight text-slate-900 dark:text-white transition-colors duration-500">
           THIS IS
@@ -18,18 +18,49 @@ function Home() {
         <p className="text-xl text-slate-600 dark:text-slate-400 font-medium text-center">
           The most comprehensive database for professional bowling statistics and match results.
         </p>
-        
-        {/* 4. Search Box Container */}
-        <div className="w-full max-w-2xl relative group mt-10">
-          <input 
-            type="text" 
-            placeholder="Search functionality coming soon..." 
-            disabled
-            className="w-full px-6 py-4 text-lg rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl dark:shadow-black/40 outline-none font-medium cursor-not-allowed text-slate-400 dark:text-slate-600 transition-[background-color,border-color,color] duration-300 ease-out"
-          />
-          <button className="absolute right-2 top-2 bottom-2 px-6 bg-blue-600 dark:bg-blue-700 text-white font-bold uppercase italic tracking-wider rounded-lg flex items-center gap-2 opacity-50 cursor-not-allowed">
-            <span className="hidden sm:inline">Search</span>
-          </button>
+
+        {/* 4. Metric Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-16 mb-8">
+          
+          {/* Card 1: The Scope */}
+          <div className="bg-white dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-8 shadow-xl dark:shadow-black/20 flex flex-col items-center justify-center min-h-[160px] transition-all duration-300 hover:-translate-y-1">
+            <span className="text-5xl font-black italic tracking-tight text-slate-900 dark:text-white">
+              2,000+
+            </span>
+            <span className="text-[11px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase mt-2">
+              Tournaments
+            </span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
+              Multi-Format Archiving
+            </span>
+          </div>
+
+          {/* Card 2: The Authority Status */}
+          <div className="bg-white dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-8 shadow-xl dark:shadow-black/20 flex flex-col items-center justify-center min-h-[160px] transition-all duration-300 hover:-translate-y-1">
+            <span className="text-5xl font-black italic tracking-tight text-slate-900 dark:text-white">
+              1 of 1
+            </span>
+            <span className="text-[11px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase mt-2">
+              Archive Network
+            </span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
+              The Only Complete Database
+            </span>
+          </div>
+
+          {/* Card 3: The Longevity */}
+          <div className="bg-white dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-8 shadow-xl dark:shadow-black/20 flex flex-col items-center justify-center min-h-[160px] transition-all duration-300 hover:-translate-y-1">
+            <span className="text-5xl font-black italic tracking-tight text-slate-900 dark:text-white">
+              60+
+            </span>
+            <span className="text-[11px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase mt-2">
+              Seasons
+            </span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
+              1963 - 2025
+            </span>
+          </div>
+
         </div>
       </div>
     </FadeIn>
