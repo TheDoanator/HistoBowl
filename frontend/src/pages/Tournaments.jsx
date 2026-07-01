@@ -21,8 +21,9 @@ function Tournaments() {
   const [seasons, setSeasons] = useState([]);
 
   useEffect(() => {
-    // Reach out directly to your Express server running on port 8000
-    fetch('http://localhost:8000/api/tournaments')
+    // Use the Render production URL if it exists, otherwise fall back to localhost for local development
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    fetch(`${apiUrl}/api/tournaments`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch tournament archives.');
         return res.json();
