@@ -3,7 +3,13 @@ const sqlite3 = require('sqlite3').verbose(); // Imports SQLite3 in verbose mode
 const cors = require('cors');
 
 const app = express(); // Creates web server app
-const db = new sqlite3.Database('./histobowl.db'); // Initializes database
+
+const path = require('path');
+const dbPath = path.resolve(__dirname, 'histobowl.db');
+const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
+  if (err) console.error('Database connection error:', err.message);
+  else console.log('Connected to the SQLite database at:', dbPath);
+});
 
 app.use(cors());
 
