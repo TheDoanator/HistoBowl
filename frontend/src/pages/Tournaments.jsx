@@ -22,10 +22,11 @@ function Tournaments() {
 
   useEffect(() => {
     // Use the Render production URL if it exists, otherwise fall back to localhost for local development
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-    fetch(`${apiUrl}/api/tournaments`)
+    fetch('https://histobowl-api.onrender.com/api/tournaments')
       .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch tournament archives.');
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
         return res.json();
       })
       .then((data) => {
