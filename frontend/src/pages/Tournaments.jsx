@@ -65,7 +65,7 @@ function Tournaments() {
 
 return (
     <FadeIn>
-      <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 mt-12 mb-16">
+      <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4">
         
         {/* Header Block & Selector Configurations */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between pb-6 mb-6">
@@ -89,7 +89,7 @@ return (
                 }}
                 className="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg shadow-sm font-bold text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
               >
-                <Settings2 className="w-4 h-4 text-blue-500" />
+                <Settings2 className="w-4 h-4 text-orange-500" />
                 Columns
               </button>
 
@@ -103,12 +103,12 @@ return (
                       Visible Columns
                     </p>
                     {Object.keys(visibleColumns).map((col) => (
-                      <label key={col} className="flex items-center gap-3 text-xs font-bold uppercase tracking-wide text-slate-700 dark:text-slate-300 cursor-pointer hover:text-blue-500 transition-colors select-none">
+                      <label key={col} className="flex items-center gap-3 text-xs font-bold uppercase tracking-wide text-slate-700 dark:text-slate-300 cursor-pointer hover:text-orange-500 transition-colors select-none">
                         <input 
                           type="checkbox"
                           checked={visibleColumns[col]}
                           onChange={() => toggleColumn(col)}
-                          className="w-4 h-4 rounded text-blue-600 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 cursor-pointer accent-blue-500"
+                          className="w-4 h-4 rounded text-orange-600 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 cursor-pointer accent-orange-500"
                         />
                         {col === 'oil' ? 'Oil Pattern' : col.replace('_', ' ')}
                       </label>
@@ -148,7 +148,7 @@ return (
                         }}
                         className={`w-full text-left px-3 py-2 rounded-lg text-xs font-black transition-colors cursor-pointer ${
                           selectedSeason === season
-                            ? 'bg-blue-600 text-white'
+                            ? 'bg-orange-600 text-white'
                             : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                         }`}
                       >
@@ -212,7 +212,7 @@ return (
                       )}
 
                       {visibleColumns.winner && (
-                        <td className="px-4 py-4 font-bold text-blue-600 dark:text-blue-400">
+                        <td className="px-4 py-4 font-bold text-orange-600 dark:text-orange-400">
                           {t.winner}
                         </td>
                       )}

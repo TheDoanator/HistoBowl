@@ -10,7 +10,7 @@ function Home() {
         </h1>
         
         {/* 2. Gradient Branding Text */}
-        <h2 className="text-8xl font-black italic tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-cyan-500 -mt-2">
+        <h2 className="text-8xl font-black italic tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-300 -mt-2">
           HISTOBOWL.
         </h2>
         
@@ -27,7 +27,7 @@ function Home() {
             <span className="text-5xl font-black italic tracking-tight text-slate-900 dark:text-white">
               2,000+
             </span>
-            <span className="text-[11px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase mt-2">
+            <span className="text-[11px] font-black tracking-widest text-orange-600 uppercase mt-2">
               Tournaments
             </span>
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
@@ -40,11 +40,11 @@ function Home() {
             <span className="text-5xl font-black italic tracking-tight text-slate-900 dark:text-white">
               1 of 1
             </span>
-            <span className="text-[11px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase mt-2">
-              Archive Network
+            <span className="text-[11px] font-black tracking-widest text-orange-600 uppercase mt-2">
+              Bowling Archive
             </span>
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
-              The Only Complete Database
+              The Only Of Its Kind
             </span>
           </div>
 
@@ -53,7 +53,7 @@ function Home() {
             <span className="text-5xl font-black italic tracking-tight text-slate-900 dark:text-white">
               60+
             </span>
-            <span className="text-[11px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase mt-2">
+            <span className="text-[11px] font-black tracking-widest text-orange-600 uppercase mt-2">
               Seasons
             </span>
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">

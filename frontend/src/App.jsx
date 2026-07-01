@@ -62,10 +62,10 @@ function App() {
 
             {/* Replaced standard <button> with <Link> */}
             <div className="flex items-center space-x-8">
-              <Link to="/" className="text-sm font-black italic tracking-wide uppercase hover:text-blue-600">
+              <Link to="/" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
                 HOME
               </Link>
-              <Link to="/tournaments" className="text-sm font-black italic tracking-wide uppercase hover:text-blue-600">
+              <Link to="/tournaments" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
                 TOURNAMENTS
               </Link>
               <button 
@@ -81,10 +81,19 @@ function App() {
         </nav>
 
         {/* Dynamic Section */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/tournaments" element={<Tournaments />} />
-        </Routes>
+        <main className="flex-1 py-12 sm:py-16">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/tournaments" element={<Tournaments />} />
+          </Routes>
+        </main>
+
+        {/* Copyright Footer - Sits safely above the fixed ticker banner */}
+        <footer className="w-full py-6 mt-auto flex justify-center items-center border-t border-slate-200/50 dark:border-slate-800/50">
+          <p className="text-xs font-medium text-slate-400 select-none tracking-wide">
+            &copy; 2026 HistoBowl. All rights reserved.
+          </p>
+        </footer>
 
         {/* Global Scrolling Ticker*/}
         <BroadcastTicker/>
@@ -104,12 +113,12 @@ function BroadcastTicker() {
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 bg-slate-900 dark:bg-black border-t border-slate-800 h-12 flex items-center overflow-hidden z-50 shadow-2xl">
-      <div className="bg-blue-600 text-white px-6 h-full flex items-center font-black text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">Updates</div>
+      <div className="bg-orange-600 text-white px-6 h-full flex items-center font-black text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">Updates</div>
       <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-950">
         <div className="animate-marquee whitespace-nowrap flex items-center gap-12 px-4">
           {[...newsItems, ...newsItems].map((news, i) => (
             <span key={i} className="text-slate-300 text-sm font-semibold uppercase flex items-center gap-3">
-              <span className="text-blue-500 text-[10px]">●</span> {news}
+              <span className="text-orange-500 text-[10px]">●</span> {news}
             </span>
           ))}
         </div>
