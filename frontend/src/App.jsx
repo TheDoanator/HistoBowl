@@ -49,8 +49,15 @@ function App() {
           <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex justify-between h-16 items-center">
             
             {/* Clicking the Logo takes you Home */}
-            <Link to="/" className="text-xl font-black italic tracking-tighter cursor-pointer select-none">
-              HISTOBOWL
+            <Link to="/" className="flex items-center gap-1 cursor-pointer select-none group">
+              <img 
+                src="/favicon.png" 
+                alt="HistoBowl Logo" 
+                className="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+              <span className="text-xl font-black italic tracking-tighter text-slate-900 dark:text-white">
+                HISTOBOWL
+              </span>
             </Link>
 
             {/* Replaced standard <button> with <Link> */}
