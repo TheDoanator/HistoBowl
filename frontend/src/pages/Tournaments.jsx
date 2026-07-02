@@ -1,71 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import FadeIn from '../components/FadeIn';
 import { Settings2 } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
-function Tournaments() {
-  const [tournaments, setTournaments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+export default function Tournaments() {
+  // 1. DATA FETCHING (React Query)
+  const { data: tournaments, isLoading, isError, error } = useQuery({
+    queryKey: ['tournamentsData'],
+    queryFn: async () => {
+      const res = await fetch('https://histobowl-api.onrender.com/api/tournaments');
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    },
+    staleTime: Infinity, 
+  });
+
+  // 2. UI STATE VARIABLES
   const [selectedSeason, setSelectedSeason] = useState('');
-  const [showColumnToggle, setShowColumnToggle] = useState(false);
   const [isSeasonOpen, setIsSeasonOpen] = useState(false);
-
+  const [showColumnToggle, setShowColumnToggle] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState({
     dates: true,
     location: true,
     winner: true,
-    oil: true,         // Default hidden to keep a clean aesthetic, user can toggle!
-    prize_money: true // Default hidden
+    oil: false,
+    prize_money: true,
   });
 
-  const [seasons, setSeasons] = useState([]);
-
-  useEffect(() => {
-    // Use the Render production URL if it exists, otherwise fall back to localhost for local development
-    fetch('https://histobowl-api.onrender.com/api/tournaments')
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setTournaments(data);
-        
-        // Dynamically compile a list of unique seasons straight from your data records
-        const uniqueSeasons = [...new Set(data.map(item => item.season))].sort((a, b) => {
-          // Extract the first 4 numbers from string (e.g. "2001-02" -> 2001, "1994" -> 1994)
-          const yearA = parseInt(a.toString().substring(0, 4), 10);
-          const yearB = parseInt(b.toString().substring(0, 4), 10);
-          
-          // Sort descending so the absolute newest seasons sit at the very top of the list
-          return yearB - yearA;
-        });
-        setSeasons(uniqueSeasons);
-        
-        // Default the selector view to the most recent season present in the records
-        if (uniqueSeasons.length > 0) {
-          setSelectedSeason(uniqueSeasons[0]);
-        }
-        
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
-
-  const toggleColumn = (columnKey) => {
-    setVisibleColumns(prev => ({
-      ...prev,
-      [columnKey]: !prev[columnKey]
-    }));
+  // 3. UI LOGIC & CALCULATIONS
+  const toggleColumn = (col) => {
+    setVisibleColumns(prev => ({ ...prev, [col]: !prev[col] }));
   };
 
-  const filteredTournaments = tournaments.filter(t => t.season === selectedSeason);
+  // Generate the list of seasons
+  const seasons = tournaments
+    ? [...new Set(tournaments.map(t => t.season))].sort().reverse()
+    : [];
 
-return (
+  // DERIVED STATE: If they haven't clicked anything yet, just use the newest season automatically!
+  const activeSeason = selectedSeason || (seasons.length > 0 ? seasons[0] : '');
+
+  // Filter based on the activeSeason instead
+  const filteredTournaments = tournaments
+    ? tournaments.filter(t => t.season === activeSeason)
+    : [];
+
+  // 4. LOADING & ERROR SCREENS
+  if (isLoading) return <div className="text-white text-center mt-10">Loading tournaments...</div>;
+  if (isError) return <div className="text-red-500 text-center mt-10">Error: {error.message}</div>;
+
+  // 5. MAIN RENDER
+  return (
     <FadeIn>
       <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4">
         
@@ -97,9 +84,7 @@ return (
 
               {showColumnToggle && (
                 <>
-                  {/* Backdrop click shield to easily dismiss dropdown */}
                   <div className="fixed inset-0 z-10" onClick={() => setShowColumnToggle(false)} />
-                  
                   <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl p-4 z-20 flex flex-col gap-3">
                     <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest border-b border-slate-100 dark:border-slate-800 pb-2 mb-1">
                       Visible Columns
@@ -129,7 +114,7 @@ return (
                 }}
                 className="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-sm font-black text-sm tracking-tight text-slate-800 dark:text-white outline-none cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors min-w-[120px] text-left flex items-center justify-between gap-2"
               >
-                <span>{selectedSeason || 'Season'}</span>
+                <span>{activeSeason || 'Season'}</span>
                 <span className="text-xs text-slate-400 select-none">▼</span>
               </button>
   
@@ -164,16 +149,11 @@ return (
           </div>
         </div>
 
-        {/* Loading and Error Fallbacks */}
-        {loading && <div className="text-center py-12 text-sm font-medium text-slate-500">Loading master archives...</div>}
-        {error && <div className="text-center py-12 text-sm font-bold text-red-500">⚠️ Error connecting to server: {error}</div>}
-
         {/* MAIN HISTORICAL ARCHIVE DATA TABLE */}
-        {!loading && !error && (
+        {tournaments && (
           <div className="w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40">
             <table className="w-full text-left border-collapse min-w-[800px]">
               
-              {/* Dynamic Headers */}
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 text-[10px] font-black uppercase tracking-widest text-slate-400 h-12">
                   <th className="pl-6 py-3 w-1/4">Event</th>
@@ -185,7 +165,6 @@ return (
                 </tr>
               </thead>
 
-              {/* Dynamic Rows */}
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm font-medium">
                 {filteredTournaments.length === 0 ? (
                   <tr>
@@ -195,12 +174,10 @@ return (
                   filteredTournaments.map((t) => (
                     <tr key={t.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors h-16 group">
                       
-                      {/* Tournament Event Name */}
                       <td className="pl-6 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">
                         {t.event}
                       </td>
 
-                      {/* Evaluated Column Render Configurations */}
                       {visibleColumns.dates && (
                         <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                           {t.airdate}
@@ -242,5 +219,3 @@ return (
     </FadeIn>
   );
 }
-
-export default Tournaments;
