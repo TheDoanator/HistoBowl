@@ -3,19 +3,19 @@ import FadeIn from '../components/FadeIn';
 function Home() {
   return (
     <FadeIn>
-      <div className="flex items-center justify-center flex-1 flex-col mt-16 max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 text-center">
+      <div className="flex items-center justify-center flex-1 flex-col mt-8 sm:mt-16 max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 text-center">
         {/* 1. Main Title Text */}
-        <h1 className="text-6xl font-black italic tracking-tight text-slate-900 dark:text-white transition-colors duration-500">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black italic tracking-tight text-slate-900 dark:text-white transition-colors duration-500">
           THIS IS
         </h1>
-        
+
         {/* 2. Gradient Branding Text */}
-        <h2 className="text-8xl font-black italic tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-300 -mt-2">
+        <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black italic tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-300 -mt-2">
           HISTOBOWL.
         </h2>
-        
+
         {/* 3. Subtitle / Description */}
-        <p className="text-xl text-slate-600 dark:text-slate-400 font-medium text-center">
+        <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-400 font-medium text-center">
           The most comprehensive database for professional bowling statistics and match results.
         </p>
 
