@@ -59,7 +59,7 @@ export default function Tournaments() {
         {/* Header Block & Selector Configurations */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between pb-6 mb-6">
           <div>
-            <h1 className="text-5xl font-black italic tracking-tight uppercase text-slate-900 dark:text-white">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black italic tracking-tight uppercase text-slate-900 dark:text-white">
               Tournaments
             </h1>
             <p className="text-base font-medium text-slate-500 dark:text-slate-400 mt-2">
@@ -85,7 +85,7 @@ export default function Tournaments() {
               {showColumnToggle && (
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setShowColumnToggle(false)} />
-                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl p-4 z-20 flex flex-col gap-3">
+                  <div className="absolute left-0 sm:left-auto sm:right-0 mt-2 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl p-4 z-20 flex flex-col gap-3">
                     <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest border-b border-slate-100 dark:border-slate-800 pb-2 mb-1">
                       Visible Columns
                     </p>
@@ -151,6 +151,8 @@ export default function Tournaments() {
 
         {/* MAIN HISTORICAL ARCHIVE DATA TABLE */}
         {tournaments && (
+          <>
+          <p className="text-[10px] text-slate-400 sm:hidden mb-2 uppercase tracking-widest font-bold">Scroll to see more →</p>
           <div className="w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40">
             <table className="w-full text-left border-collapse min-w-[800px]">
               
@@ -213,6 +215,7 @@ export default function Tournaments() {
               </tbody>
             </table>
           </div>
+          </>
         )}
 
       </div>
