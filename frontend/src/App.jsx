@@ -1,6 +1,6 @@
 import './App.css'
 import { useState } from 'react';
-import { Construction, Sun, Moon } from 'lucide-react'; 
+import { Construction, Sun, Moon, Menu, X } from 'lucide-react'; 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import our router tools
 import Home from './pages/Home'; // Import our new home brick
 import Tournaments from './pages/Tournaments'; // Import our new tournaments brick
@@ -32,13 +32,15 @@ function App() {
       setTheme(nextTheme);
   };
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     // 1. Wrap everything in BrowserRouter so routing works across the whole app
     <BrowserRouter>
       <div className='min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-[background-color] duration-300 ease-out flex flex-col pb-12'>
         {/* Global Banner */}
         <div className='w-full'>
-          <div className='bg-amber-100 dark:bg-amber-900 py-2 text-center text-xs font-medium text-amber-800 dark:text-amber-400 flex items-center justify-center gap-1 border-b dark:border-amber-900/20'>
+          <div className='bg-amber-100 dark:bg-amber-900 py-2 text-center text-[10px] sm:text-xs font-medium text-amber-800 dark:text-amber-400 flex items-center justify-center gap-1 border-b dark:border-amber-900/20'>
             <Construction className="w-3 h-3" />
             <span>HistoBowl is in alpha. Many features are incomplete or missing. Expect updates soon!</span>
           </div>
@@ -60,8 +62,8 @@ function App() {
               </span>
             </Link>
 
-            {/* Replaced standard <button> with <Link> */}
-            <div className="flex items-center space-x-8">
+            {/* Desktop nav links - hidden below md, shown at md and up */}
+            <div className="hidden md:flex items-center space-x-8">
               <Link to="/" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
                 HOME
               </Link>
@@ -77,6 +79,49 @@ function App() {
               </button>
             </div>
 
+            {/* Mobile controls - theme toggle + hamburger, shown below md only */}
+            <div className="flex md:hidden items-center gap-2">
+              <button 
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
+                aria-label="Toggle Dark Mode"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+              <button
+                onClick={() => setIsMenuOpen((prev) => !prev)}
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
+                aria-label="Toggle Menu"
+                aria-expanded={isMenuOpen}
+              >
+                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+
+          
+          {/* Mobile dropdown menu */}
+          <div
+            className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
+              isMenuOpen ? 'max-h-40 opacity-100 border-t border-slate-200 dark:border-slate-800' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex flex-col py-4 gap-4 bg-white/95 dark:bg-slate-900/95">
+              <Link 
+                to="/" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
+              >
+                HOME
+              </Link>
+              <Link 
+                to="/tournaments" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
+              >
+                TOURNAMENTS
+              </Link>
+            </div>
           </div>
         </nav>
 
