@@ -1,5 +1,5 @@
 import './App.css'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Construction, Sun, Moon, Menu, X } from 'lucide-react'; 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import our router tools
 import Home from './pages/Home'; // Import our new home brick
@@ -33,6 +33,18 @@ function App() {
   };
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      // #020617 is Tailwind's slate-950 (your dark bg)
+      // #f8fafc is Tailwind's slate-50 (your light bg)
+      metaThemeColor.setAttribute(
+        'content', 
+        theme === 'dark' ? '#020617' : '#f8fafc'
+      );
+    }
+  }, [theme]);
 
   return (
     // 1. Wrap everything in BrowserRouter so routing works across the whole app
