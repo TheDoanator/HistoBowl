@@ -158,17 +158,17 @@ function BroadcastTicker() {
 
   return (
     <footer className="fixed bottom-0 left-0 right-0 bg-slate-900 dark:bg-black border-t border-slate-800 h-12 flex items-center overflow-hidden z-50 shadow-2xl">
-      <div className="bg-orange-600 text-white px-6 h-full flex items-center font-black text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">Updates</div>
+      <div className="bg-orange-600 text-white px-4 md:px-6 h-full flex items-center font-black text-[10px] md:text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">Updates</div>
       <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-950">
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-12 px-4">
+        <div className="animate-marquee whitespace-nowrap flex items-center gap-8 md:gap-12 px-4">
           {[...newsItems, ...newsItems].map((news, i) => (
-            <span key={i} className="text-slate-300 text-sm font-semibold uppercase flex items-center gap-3">
-              <span className="text-orange-500 text-[10px]">●</span> {news}
+            <span key={i} className="text-slate-300 text-xs md:text-sm font-semibold uppercase flex items-center gap-2 md:gap-3">
+              <span className="text-orange-500 text-[8px] md:text-[10px]">●</span> {news}
             </span>
           ))}
         </div>
       </div>
-      <div className="hidden md:flex bg-slate-900 dark:bg-black px-4 h-full items-center border-l border-slate-800 text-[10px] font-mono text-slate-500">v0.5.1-ALPHA</div>
+      <div className="flex bg-slate-900 dark:bg-black px-2 md:px-4 h-full items-center border-l border-slate-800 text-[8px] md:text-[10px] font-mono text-slate-500">v0.5.1-ALPHA</div>
     </footer>
   );
 }
