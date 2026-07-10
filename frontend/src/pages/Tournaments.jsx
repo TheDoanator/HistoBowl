@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import FadeIn from '../components/FadeIn';
-import { Settings2 } from 'lucide-react';
+import { Settings2, Trophy, MapPin, Calendar, DollarSign, Droplet } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 
 export default function Tournaments() {
@@ -150,10 +150,74 @@ export default function Tournaments() {
         </div>
 
         {/* MAIN HISTORICAL ARCHIVE DATA TABLE */}
+        {/* --- MOBILE VIEW: CARDS (Visible only on small screens) --- */}
         {tournaments && (
-          <div className="w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40">
+          <div className="flex flex-col gap-4 md:hidden">
+            {filteredTournaments.length === 0 ? (
+              <div className="text-center py-12 text-slate-400 italic bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800">No records found.</div>
+            ) : (
+              filteredTournaments.map((t) => (
+                <div key={t.id} className="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 flex flex-col gap-3">
+                  <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <h3 className="font-black text-lg text-slate-900 dark:text-white leading-tight">{t.event}</h3>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm">
+                    {visibleColumns.winner && (
+                      <div className="col-span-2 flex items-center gap-2">
+                        <Trophy className="w-4 h-4 text-orange-500 flex-shrink-0" />
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Winner</p>
+                          <p className="font-bold text-orange-600 dark:text-orange-400">{t.winner}</p>
+                        </div>
+                      </div>
+                    )}
+                    {visibleColumns.dates && (
+                      <div className="flex items-start gap-2">
+                        <Calendar className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Dates</p>
+                          <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">{t.airdate}</p>
+                        </div>
+                      </div>
+                    )}
+                    {visibleColumns.location && (
+                      <div className="flex items-start gap-2">
+                        <MapPin className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Location</p>
+                          <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">{t.city}</p>
+                        </div>
+                      </div>
+                    )}
+                    {visibleColumns.prize_money && (
+                      <div className="flex items-start gap-2">
+                        <DollarSign className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Prize</p>
+                          <p className="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-xs">{t.prize_money || '—'}</p>
+                        </div>
+                      </div>
+                    )}
+                    {visibleColumns.oil && (
+                      <div className="col-span-2 flex items-start gap-2 pt-1">
+                        <Droplet className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Oil Pattern</p>
+                          <p className="font-medium italic text-slate-600 dark:text-slate-400 text-xs">{t.oil || 'N/A'}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+        {/* --- DESKTOP VIEW: TABLE (Hidden on mobile, visible on md and up) --- */}
+        {tournaments && (
+          <div className="hidden md:block w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40">
             <table className="w-full text-left border-collapse min-w-[800px]">
-              
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 text-[10px] font-black uppercase tracking-widest text-slate-400 h-12">
                   <th className="pl-6 py-3 w-1/4">Event</th>
@@ -164,7 +228,6 @@ export default function Tournaments() {
                   {visibleColumns.prize_money && <th className="px-4 py-3">Prize Money</th>}
                 </tr>
               </thead>
-
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm font-medium">
                 {filteredTournaments.length === 0 ? (
                   <tr>
@@ -173,40 +236,12 @@ export default function Tournaments() {
                 ) : (
                   filteredTournaments.map((t) => (
                     <tr key={t.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors h-16 group">
-                      
-                      <td className="pl-6 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">
-                        {t.event}
-                      </td>
-
-                      {visibleColumns.dates && (
-                        <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">
-                          {t.airdate}
-                        </td>
-                      )}
-
-                      {visibleColumns.location && (
-                        <td className="px-4 py-4 text-slate-600 dark:text-slate-400">
-                          {t.city}
-                        </td>
-                      )}
-
-                      {visibleColumns.winner && (
-                        <td className="px-4 py-4 font-bold text-orange-600 dark:text-orange-400">
-                          {t.winner}
-                        </td>
-                      )}
-
-                      {visibleColumns.oil && (
-                        <td className="px-4 py-4 text-slate-600 dark:text-slate-400 italic text-xs">
-                          {t.oil || 'N/A'}
-                        </td>
-                      )}
-
-                      {visibleColumns.prize_money && (
-                        <td className="px-4 py-4 font-mono font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
-                          {t.prize_money || '—'}
-                        </td>
-                      )}
+                      <td className="pl-6 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">{t.event}</td>
+                      {visibleColumns.dates && <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{t.airdate}</td>}
+                      {visibleColumns.location && <td className="px-4 py-4 text-slate-600 dark:text-slate-400">{t.city}</td>}
+                      {visibleColumns.winner && <td className="px-4 py-4 font-bold text-orange-600 dark:text-orange-400">{t.winner}</td>}
+                      {visibleColumns.oil && <td className="px-4 py-4 text-slate-600 dark:text-slate-400 italic text-xs">{t.oil || 'N/A'}</td>}
+                      {visibleColumns.prize_money && <td className="px-4 py-4 font-mono font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">{t.prize_money || '—'}</td>}
                     </tr>
                   ))
                 )}
@@ -214,7 +249,6 @@ export default function Tournaments() {
             </table>
           </div>
         )}
-
       </div>
     </FadeIn>
   );
