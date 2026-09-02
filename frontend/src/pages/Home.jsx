@@ -25,39 +25,39 @@ function Home() {
           {/* Card 1: The Scope */}
           <div className="bg-white dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-8 shadow-xl dark:shadow-black/20 flex flex-col items-center justify-center min-h-[160px] transition-all duration-300 hover:-translate-y-1">
             <span className="text-5xl font-black italic tracking-tight text-slate-900 dark:text-white">
-              2,000+
+              1,900+
             </span>
             <span className="text-[11px] font-black tracking-widest text-orange-600 uppercase mt-2">
-              Tournaments
+              PBA Tournaments
             </span>
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
-              Multi-Format Archiving
+              Search. Explore. Compare.
             </span>
           </div>
 
           {/* Card 2: The Authority Status */}
           <div className="bg-white dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-8 shadow-xl dark:shadow-black/20 flex flex-col items-center justify-center min-h-[160px] transition-all duration-300 hover:-translate-y-1">
             <span className="text-5xl font-black italic tracking-tight text-slate-900 dark:text-white">
-              1 of 1
+              1
             </span>
             <span className="text-[11px] font-black tracking-widest text-orange-600 uppercase mt-2">
-              Bowling Archive
+              Database
             </span>
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
-              The Only Of Its Kind
+              Built to Make Bowling Searchable
             </span>
           </div>
 
           {/* Card 3: The Longevity */}
           <div className="bg-white dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-8 shadow-xl dark:shadow-black/20 flex flex-col items-center justify-center min-h-[160px] transition-all duration-300 hover:-translate-y-1">
             <span className="text-5xl font-black italic tracking-tight text-slate-900 dark:text-white">
-              60+
+              68
             </span>
             <span className="text-[11px] font-black tracking-widest text-orange-600 uppercase mt-2">
-              Seasons
+              Years of PBA History
             </span>
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
-              1963 - 2025
+              Preserved in One Place
             </span>
           </div>
 

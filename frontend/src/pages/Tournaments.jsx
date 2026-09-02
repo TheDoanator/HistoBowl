@@ -8,7 +8,7 @@ export default function Tournaments() {
   const { data: tournaments, isLoading, isError, error } = useQuery({
     queryKey: ['tournamentsData'],
     queryFn: async () => {
-      const res = await fetch('https://histobowl-api.onrender.com/api/tournaments');
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/tournaments`);
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
