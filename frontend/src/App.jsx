@@ -2,8 +2,9 @@ import './App.css'
 import { useState, useEffect } from 'react';
 import { Construction, Sun, Moon, Menu, X } from 'lucide-react'; 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import our router tools
-import Home from './pages/Home'; // Import our new home brick
-import Tournaments from './pages/Tournaments'; // Import our new tournaments brick
+import Home from './pages/Home';
+import Tournaments from './pages/Tournaments';
+import Players  from './pages/Players';
 
 function App() {
   const [theme, setTheme] = useState(() => {
@@ -82,6 +83,9 @@ function App() {
               <Link to="/tournaments" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
                 TOURNAMENTS
               </Link>
+              <Link to="/players" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
+                PLAYERS
+              </Link>
               <button 
                 onClick={toggleTheme}
                 className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
@@ -142,6 +146,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/tournaments" element={<Tournaments />} />
+            <Route path="/players" element={<Players />} />
           </Routes>
         </main>
 

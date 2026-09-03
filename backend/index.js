@@ -28,3 +28,15 @@ app.get('/api/tournaments', (req, res) => {
     res.json(rows); // Converts data in JSON
   })
 })
+
+app.get('/api/players', (req, res) => {
+  const sql = 'SELECT * FROM players'; // Build command to execute
+
+  db.all(sql, [], (err, rows) => { // Executes command on DB
+    if (err) {
+      res.status(500).json({ error: err.message }); // Return error message if encountered
+      return;
+    }
+    res.json(rows); // Converts data in JSON
+  })
+})
