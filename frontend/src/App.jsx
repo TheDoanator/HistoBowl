@@ -59,7 +59,7 @@ function App() {
         </div>
 
         {/* Global Navbar */}
-        <nav className="sticky top-0 z-40 border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm transition-[background-color,border-color] duration-300 ease-out">
+        <nav className="sticky top-0 z-40 border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none">
           <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex justify-between h-16 items-center">
             
             {/* Clicking the Logo takes you Home */}
@@ -146,7 +146,7 @@ function App() {
         </main>
 
         {/* Copyright Footer - Sits safely above the fixed ticker banner */}
-        <footer className="w-full py-6 mt-auto flex justify-center items-center border-t border-slate-200/50 dark:border-slate-800/50">
+        <footer className="w-full py-6 mt-auto flex justify-center items-center border-t border-slate-200/50 dark:border-slate-800/50 transition-[border-color] duration-300 ease-out">
           <p className="text-xs font-medium text-slate-400 select-none tracking-wide">
             &copy; 2026 HistoBowl. All rights reserved.
           </p>
@@ -169,18 +169,29 @@ function BroadcastTicker() {
   ];
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-slate-900 dark:bg-black border-t border-slate-800 h-12 flex items-center overflow-hidden z-50 shadow-2xl">
+    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-colors duration-300 ease-out">
       <div className="bg-orange-600 text-white px-4 md:px-6 h-full flex items-center font-black text-[10px] md:text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">News</div>
-      <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-950">
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-8 md:gap-12 px-4">
-          {[...newsItems, ...newsItems].map((news, i) => (
-            <span key={i} className="text-slate-300 text-xs md:text-sm font-semibold uppercase flex items-center gap-2 md:gap-3">
-              <span className="text-orange-500 text-[8px] md:text-[10px]">●</span> {news}
-            </span>
+      <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-100 dark:bg-slate-950">
+        <div className="animate-marquee whitespace-nowrap flex w-max items-center">
+          {[0, 1].map((group) => (
+            <div
+              key={group}
+              className="flex shrink-0 items-center gap-8 md:gap-12 pr-8 md:pr-12"
+            >
+              {newsItems.map((news, i) => (
+                <span
+                  key={i}
+                  className="text-slate-700 dark:text-slate-300 text-xs md:text-sm font-semibold uppercase flex items-center gap-2 md:gap-3"
+                >
+                  <span className="text-orange-500 text-[8px] md:text-[10px]">●</span>
+                  {news}
+                </span>
+              ))}
+            </div>
           ))}
         </div>
       </div>
-      <div className="flex bg-slate-900 dark:bg-black px-2 md:px-4 h-full items-center border-l border-slate-800 text-[8px] md:text-[10px] font-mono text-slate-500">v0.5.2-ALPHA</div>
+      <div className="flex bg-slate-50 dark:bg-black px-2 md:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] md:text-[10px] font-mono text-slate-500">v0.5.3-ALPHA</div>
     </footer>
   );
 }
