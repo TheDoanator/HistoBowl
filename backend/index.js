@@ -30,7 +30,7 @@ app.get('/api/tournaments', (req, res) => {
 })
 
 app.get('/api/players', (req, res) => {
-  const sql = 'SELECT * FROM players'; // Build command to execute
+  const sql = 'SELECT * FROM players ORDER BY name'; // Build command to execute
 
   db.all(sql, [], (err, rows) => { // Executes command on DB
     if (err) {

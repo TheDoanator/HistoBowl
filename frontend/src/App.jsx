@@ -118,11 +118,11 @@ function App() {
           
           {/* Mobile dropdown menu */}
           <div
-            className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
+            className={`md:hidden overflow-hidden bg-white/95 dark:bg-slate-900/95 transition-[max-height,opacity] duration-300 ease-out ${
               isMenuOpen ? 'max-h-40 opacity-100 border-t border-slate-200 dark:border-slate-800' : 'max-h-0 opacity-0'
             }`}
           >
-            <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex flex-col py-4 gap-4 bg-white/95 dark:bg-slate-900/95">
+            <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex flex-col py-4 gap-4">
               <Link 
                 to="/" 
                 onClick={() => setIsMenuOpen(false)}
@@ -136,6 +136,13 @@ function App() {
                 className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
               >
                 TOURNAMENTS
+              </Link>
+              <Link
+                to="/players"
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
+              >
+                PLAYERS
               </Link>
             </div>
           </div>
@@ -170,7 +177,11 @@ function BroadcastTicker() {
     'HistoBowl enters alpha stages of development',
     'Robarge & O\'Bryant conquer The Luci',
     'Raymond Teece wins first PBA title in Sweden',
-    'Jakob Butturff passes away at 32'
+    'Jakob Butturff passes away at 32',
+    'Bowling Planet starts short-form video series',
+    'DeeRonn Booker announces cancer diagnosis',
+    'Liz Johnson claims USBC Senior Queens in nail-biting finish',
+    'EJ Tackett headlines Player of the Year nominees'
   ];
 
   return (
@@ -178,9 +189,10 @@ function BroadcastTicker() {
       <div className="bg-orange-600 text-white px-4 md:px-6 h-full flex items-center font-black text-[10px] md:text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">News</div>
       <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-100 dark:bg-slate-950">
         <div className="animate-marquee whitespace-nowrap flex w-max items-center">
-          {[0, 1].map((group) => (
+          {[0, 1, 2, 3].map((group) => (
             <div
               key={group}
+              aria-hidden={group > 0}
               className="flex shrink-0 items-center gap-8 md:gap-12 pr-8 md:pr-12"
             >
               {newsItems.map((news, i) => (
@@ -196,7 +208,7 @@ function BroadcastTicker() {
           ))}
         </div>
       </div>
-      <div className="flex bg-slate-50 dark:bg-black px-2 md:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] md:text-[10px] font-mono text-slate-500">v0.5.3-ALPHA</div>
+      <div className="flex bg-slate-50 dark:bg-black px-2 md:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] md:text-[10px] font-mono text-slate-500">v0.6.0-ALPHA</div>
     </footer>
   );
 }
