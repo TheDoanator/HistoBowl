@@ -278,14 +278,14 @@ export default function Players() {
         )}
 
         {players && filteredPlayers.length > 0 && (
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6 px-1 sm:px-2">
-            <p className="text-center sm:text-left text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400">
+          <div className="flex flex-col items-center gap-3 mt-6 px-1 sm:px-2 lg:flex-row lg:justify-between lg:gap-6">
+            <p className="text-center text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 lg:text-left">
               Showing <span className="font-black text-slate-700 dark:text-slate-200">{pageStartIndex + 1}</span> to{' '}
               <span className="font-black text-slate-700 dark:text-slate-200">{pageEndIndex}</span> of{' '}
               <span className="font-black text-slate-700 dark:text-slate-200">{totalPlayers}</span> players
             </p>
 
-            <nav aria-label="Players pagination" className="flex items-center justify-center gap-1 sm:gap-2">
+            <nav aria-label="Players pagination" className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
               {paginationItems.map((item) => {
                 if (typeof item === 'string') {
                   return (
@@ -319,6 +319,10 @@ export default function Players() {
                 );
               })}
             </nav>
+
+            <p className="text-center text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 lg:text-right">
+              Last updated: Sep 13, 2026
+            </p>
           </div>
         )}
       </div>
