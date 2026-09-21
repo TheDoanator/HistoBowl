@@ -5,7 +5,6 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
-  CalendarRange,
   DollarSign,
   MapPin,
   Search,
@@ -16,7 +15,6 @@ const PLAYERS_PER_PAGE = 20;
 const PLAYER_COLUMNS = [
   { key: 'name', label: 'NAME', className: 'pl-6 pr-4 py-3' },
   { key: 'hometown', label: 'HOMETOWN', className: 'px-4 py-3' },
-  { key: 'years_active', label: 'YEARS ACTIVE', className: 'px-4 py-3' },
   { key: 'titles', label: 'TITLES', className: 'px-4 py-3' },
   { key: 'earnings', label: 'EARNINGS', className: 'px-4 py-3' },
 ];
@@ -33,12 +31,19 @@ function getSortValue(player, key) {
     return Number.isNaN(earnings) ? null : earnings;
   }
 
-  if (key === 'years_active' || key === 'titles') {
+  if (key === 'titles') {
     const number = Number(value);
     return Number.isNaN(number) ? null : number;
   }
 
   return String(value);
+}
+
+function comparePlayerNames(playerA, playerB) {
+  return String(playerA.name ?? '').localeCompare(String(playerB.name ?? ''), undefined, {
+    numeric: true,
+    sensitivity: 'base',
+  });
 }
 
 function getPaginationItems(currentPage, totalPages) {
@@ -93,13 +98,15 @@ export default function Players() {
     const valueA = getSortValue(playerA, sortConfig.key);
     const valueB = getSortValue(playerB, sortConfig.key);
 
-    if (valueA === null && valueB === null) return 0;
+    if (valueA === null && valueB === null) return comparePlayerNames(playerA, playerB);
     if (valueA === null) return 1;
     if (valueB === null) return -1;
 
     const comparison = typeof valueA === 'number'
       ? valueA - valueB
       : valueA.localeCompare(valueB, undefined, { numeric: true, sensitivity: 'base' });
+
+    if (comparison === 0) return comparePlayerNames(playerA, playerB);
 
     return sortConfig.direction === 'ascending' ? comparison : -comparison;
   });
@@ -154,9 +161,9 @@ export default function Players() {
           </div>
         </div>
 
-        {/* --- MOBILE VIEW: CARDS (Visible only on small screens) --- */}
+        {/* --- MOBILE VIEW: CARDS (Visible below lg) --- */}
         {players && (
-          <div className="flex flex-col gap-4 md:hidden">
+          <div className="flex flex-col gap-4 lg:hidden">
             {filteredPlayers.length === 0 ? (
               <div className="text-center py-12 text-slate-400 italic bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800">
                 No players found.
@@ -180,16 +187,6 @@ export default function Players() {
                         <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Hometown</p>
                         <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">
                           {p.hometown || '—'}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2">
-                      <CalendarRange className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Years Active</p>
-                        <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">
-                          {p.years_active || '—'}
                         </p>
                       </div>
                     </div>
@@ -220,9 +217,9 @@ export default function Players() {
           </div>
         )}
 
-        {/* --- DESKTOP VIEW: TABLE (Hidden on mobile, visible on md and up) --- */}
+        {/* --- DESKTOP VIEW: TABLE (Visible on lg and up) --- */}
         {players && (
-          <div className="hidden md:block w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40 transition-colors duration-300 ease-out">
+          <div className="hidden lg:block w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40 transition-colors duration-300 ease-out">
             <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 text-[10px] font-black uppercase tracking-widest text-slate-400 h-12 transition-colors duration-300 ease-out">
@@ -257,7 +254,7 @@ export default function Players() {
               <tbody className="divide-y text-sm font-medium">
                 {filteredPlayers.length === 0 ? (
                   <tr>
-                    <td colSpan="5" className="text-center py-12 text-slate-400 italic">No players found.</td>
+                    <td colSpan="4" className="text-center py-12 text-slate-400 italic">No players found.</td>
                   </tr>
                 ) : (
                   paginatedPlayers.map((p) => (
@@ -266,7 +263,6 @@ export default function Players() {
                         {p.name || '—'}
                       </td>
                       <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{p.hometown || '—'}</td>
-                      <td className="px-4 py-4 text-slate-600 dark:text-slate-400">{p.years_active || '—'}</td>
                       <td className="px-4 py-4 font-bold text-orange-600 dark:text-orange-400">{p.titles || '0'}</td>
                       <td className="px-4 py-4 font-mono font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">{p.earnings || '—'}</td>
                     </tr>
@@ -321,7 +317,7 @@ export default function Players() {
             </nav>
 
             <p className="text-center text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 lg:text-right">
-              Last updated: Sep 13, 2026
+              Player data current through 2026 • Earnings through 2025
             </p>
           </div>
         )}

@@ -181,7 +181,8 @@ function BroadcastTicker() {
     'Bowling Planet starts short-form video series',
     'DeeRonn Booker announces cancer diagnosis',
     'Liz Johnson claims USBC Senior Queens in nail-biting finish',
-    'EJ Tackett headlines Player of the Year nominees'
+    'EJ Tackett becomes 2026 Player of the Year',
+    'Randy Pedersen passes away at 64'
   ];
 
   return (
