@@ -315,9 +315,8 @@ export default function Players() {
                 );
               })}
             </nav>
-
             <p className="text-center text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 lg:text-right">
-              Player data current through 2026 • Earnings through 2025
+              Updated for 2026 season • Earnings reflect 2025 totals
             </p>
           </div>
         )}
