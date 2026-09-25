@@ -186,9 +186,9 @@ function BroadcastTicker() {
   ];
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-colors duration-300 ease-out">
+    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-[background-color,border-color,color] duration-300 ease-out">
       <div className="bg-orange-600 text-white px-4 md:px-6 h-full flex items-center font-black text-[10px] md:text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">News</div>
-      <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-100 dark:bg-slate-950">
+      <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-100 dark:bg-slate-950 transition-[background-color,border-color,color] duration-300 ease-out">
         <div className="animate-marquee whitespace-nowrap flex w-max items-center">
           {[0, 1, 2, 3].map((group) => (
             <div
@@ -199,7 +199,7 @@ function BroadcastTicker() {
               {newsItems.map((news, i) => (
                 <span
                   key={i}
-                  className="text-slate-700 dark:text-slate-300 text-xs md:text-sm font-semibold uppercase flex items-center gap-2 md:gap-3"
+                  className="text-slate-700 dark:text-slate-300 text-xs md:text-sm font-semibold uppercase flex items-center gap-2 md:gap-3 transition-[background-color,border-color,color] duration-300 ease-out"
                 >
                   <span className="text-orange-500 text-[8px] md:text-[10px]">●</span>
                   {news}
@@ -209,7 +209,7 @@ function BroadcastTicker() {
           ))}
         </div>
       </div>
-      <div className="flex bg-slate-50 dark:bg-black px-2 md:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] md:text-[10px] font-mono text-slate-500">v0.6.0-ALPHA</div>
+      <div className="flex bg-slate-50 dark:bg-black px-2 md:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] md:text-[10px] font-mono text-slate-500 transition-[background-color,border-color,color] duration-300 ease-out">v0.6.0-ALPHA</div>
     </footer>
   );
 }

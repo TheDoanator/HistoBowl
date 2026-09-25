@@ -3,6 +3,31 @@
   100% { transform: translateX(-25%); }
 }
 
+@keyframes hb-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.08, 1.14);
+    opacity: 0;
+  }
+}
+
 .animate-marquee {
   animation: marquee 45s linear infinite;
+}
+
+.hb-archive-ring {
+  position: absolute;
+  inset: -0.375rem;
+  border: 2px solid rgb(234 88 12);
+  pointer-events: none;
+  transform-origin: center;
+  animation: hb-ring 1s ease-out infinite;
+  will-change: transform, opacity;
+}
+
+body:has([data-home-profile-footer]) main + footer {
+  display: none;
 }
