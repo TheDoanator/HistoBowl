@@ -182,7 +182,8 @@ function BroadcastTicker() {
     'DeeRonn Booker announces cancer diagnosis',
     'Liz Johnson claims USBC Senior Queens in nail-biting finish',
     'EJ Tackett becomes 2026 Player of the Year',
-    'Randy Pedersen passes away at 64'
+    'Randy Pedersen passes away at 64',
+    'Brandon Bonta named 2026 Rookie of the Year'
   ];
 
   return (
