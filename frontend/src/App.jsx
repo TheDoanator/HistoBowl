@@ -2,8 +2,9 @@ import './App.css'
 import { useState, useEffect } from 'react';
 import { Construction, Sun, Moon, Menu, X } from 'lucide-react'; 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import our router tools
-import Home from './pages/Home'; // Import our new home brick
-import Tournaments from './pages/Tournaments'; // Import our new tournaments brick
+import Home from './pages/Home';
+import Tournaments from './pages/Tournaments';
+import Players  from './pages/Players';
 
 function App() {
   const [theme, setTheme] = useState(() => {
@@ -82,6 +83,9 @@ function App() {
               <Link to="/tournaments" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
                 TOURNAMENTS
               </Link>
+              <Link to="/players" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
+                PLAYERS
+              </Link>
               <button 
                 onClick={toggleTheme}
                 className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
@@ -114,11 +118,11 @@ function App() {
           
           {/* Mobile dropdown menu */}
           <div
-            className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
+            className={`md:hidden overflow-hidden bg-white/95 dark:bg-slate-900/95 transition-[max-height,opacity] duration-300 ease-out ${
               isMenuOpen ? 'max-h-40 opacity-100 border-t border-slate-200 dark:border-slate-800' : 'max-h-0 opacity-0'
             }`}
           >
-            <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex flex-col py-4 gap-4 bg-white/95 dark:bg-slate-900/95">
+            <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex flex-col py-4 gap-4">
               <Link 
                 to="/" 
                 onClick={() => setIsMenuOpen(false)}
@@ -133,6 +137,13 @@ function App() {
               >
                 TOURNAMENTS
               </Link>
+              <Link
+                to="/players"
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
+              >
+                PLAYERS
+              </Link>
             </div>
           </div>
         </nav>
@@ -142,6 +153,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/tournaments" element={<Tournaments />} />
+            <Route path="/players" element={<Players />} />
           </Routes>
         </main>
 
@@ -165,23 +177,30 @@ function BroadcastTicker() {
     'HistoBowl enters alpha stages of development',
     'Robarge & O\'Bryant conquer The Luci',
     'Raymond Teece wins first PBA title in Sweden',
-    'Jakob Butturff passes away at 32'
+    'Jakob Butturff passes away at 32',
+    'Bowling Planet starts short-form video series',
+    'DeeRonn Booker announces cancer diagnosis',
+    'Liz Johnson claims USBC Senior Queens in nail-biting finish',
+    'EJ Tackett becomes 2026 Player of the Year',
+    'Randy Pedersen passes away at 64',
+    'Brandon Bonta named 2026 Rookie of the Year'
   ];
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-colors duration-300 ease-out">
+    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-[background-color,border-color,color] duration-300 ease-out">
       <div className="bg-orange-600 text-white px-4 md:px-6 h-full flex items-center font-black text-[10px] md:text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">News</div>
-      <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-100 dark:bg-slate-950">
+      <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-100 dark:bg-slate-950 transition-[background-color,border-color,color] duration-300 ease-out">
         <div className="animate-marquee whitespace-nowrap flex w-max items-center">
-          {[0, 1].map((group) => (
+          {[0, 1, 2, 3].map((group) => (
             <div
               key={group}
+              aria-hidden={group > 0}
               className="flex shrink-0 items-center gap-8 md:gap-12 pr-8 md:pr-12"
             >
               {newsItems.map((news, i) => (
                 <span
                   key={i}
-                  className="text-slate-700 dark:text-slate-300 text-xs md:text-sm font-semibold uppercase flex items-center gap-2 md:gap-3"
+                  className="text-slate-700 dark:text-slate-300 text-xs md:text-sm font-semibold uppercase flex items-center gap-2 md:gap-3 transition-[background-color,border-color,color] duration-300 ease-out"
                 >
                   <span className="text-orange-500 text-[8px] md:text-[10px]">●</span>
                   {news}
@@ -191,7 +210,7 @@ function BroadcastTicker() {
           ))}
         </div>
       </div>
-      <div className="flex bg-slate-50 dark:bg-black px-2 md:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] md:text-[10px] font-mono text-slate-500">v0.5.3-ALPHA</div>
+      <div className="flex bg-slate-50 dark:bg-black px-2 md:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] md:text-[10px] font-mono text-slate-500 transition-[background-color,border-color,color] duration-300 ease-out">v0.6.0-ALPHA</div>
     </footer>
   );
 }

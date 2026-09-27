@@ -1,7 +1,42 @@
 import { useState } from 'react';
 import FadeIn from '../components/FadeIn';
-import { Settings2, Trophy, MapPin, Calendar, DollarSign, Droplet } from 'lucide-react';
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  Calendar,
+  DollarSign,
+  Droplet,
+  MapPin,
+  Settings2,
+  Trophy,
+} from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+
+function getTournamentSortValue(tournament, key) {
+  const value = tournament[key];
+
+  if (value === null || value === undefined || value === '') {
+    return null;
+  }
+
+  if (key === 'prize_money') {
+    const prizeMoney = Number.parseFloat(String(value).replace(/[^0-9.-]/g, ''));
+    return Number.isNaN(prizeMoney) ? null : prizeMoney;
+  }
+
+  const dateText = String(value).trim();
+  const startDate = dateText.match(/^([A-Za-z]+)\.?\s+(\d{1,2})/);
+  const years = dateText.match(/\b\d{4}\b/g);
+
+  if (startDate && years) {
+    const timestamp = Date.parse(`${startDate[1]} ${startDate[2]}, ${years.at(-1)}`);
+    if (!Number.isNaN(timestamp)) return timestamp;
+  }
+
+  const timestamp = Date.parse(dateText);
+  return Number.isNaN(timestamp) ? null : timestamp;
+}
 
 export default function Tournaments() {
   // 1. DATA FETCHING (React Query)
@@ -21,6 +56,7 @@ export default function Tournaments() {
   const [selectedSeason, setSelectedSeason] = useState('');
   const [isSeasonOpen, setIsSeasonOpen] = useState(false);
   const [showColumnToggle, setShowColumnToggle] = useState(false);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [visibleColumns, setVisibleColumns] = useState({
     dates: true,
     location: true,
@@ -46,9 +82,38 @@ export default function Tournaments() {
   const filteredTournaments = tournaments
     ? tournaments.filter(t => t.season === activeSeason)
     : [];
+  const sortedTournaments = sortConfig.key
+    ? [...filteredTournaments].sort((tournamentA, tournamentB) => {
+        const valueA = getTournamentSortValue(tournamentA, sortConfig.key);
+        const valueB = getTournamentSortValue(tournamentB, sortConfig.key);
+
+        if (valueA === null && valueB === null) return 0;
+        if (valueA === null) return 1;
+        if (valueB === null) return -1;
+
+        const comparison = valueA - valueB;
+        return sortConfig.direction === 'ascending' ? comparison : -comparison;
+      })
+    : filteredTournaments;
+
+  const handleSort = (key) => {
+    setSortConfig((currentSort) => ({
+      key,
+      direction: currentSort.key === key && currentSort.direction === 'ascending'
+        ? 'descending'
+        : 'ascending',
+    }));
+  };
+
+  const DateSortIcon = sortConfig.key === 'airdate'
+    ? sortConfig.direction === 'ascending' ? ArrowUp : ArrowDown
+    : ArrowUpDown;
+  const PrizeSortIcon = sortConfig.key === 'prize_money'
+    ? sortConfig.direction === 'ascending' ? ArrowUp : ArrowDown
+    : ArrowUpDown;
 
   // 4. LOADING & ERROR SCREENS
-  if (isLoading) return <div className="text-white text-center mt-10">Loading tournaments...</div>;
+  if (isLoading) return <div className="text-white dark:text-slate-400 text-center mt-10">Loading tournaments...</div>;
   if (isError) return <div className="text-red-500 text-center mt-10">Error: {error.message}</div>;
 
   // 5. MAIN RENDER
@@ -57,17 +122,17 @@ export default function Tournaments() {
       <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4">
         
         {/* Header Block & Selector Configurations */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between pb-6 mb-6">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between pb-6 mb-6">
           <div>
             <h1 className="text-5xl font-black italic tracking-tight uppercase text-slate-900 dark:text-white">
               Tournaments
             </h1>
-            <p className="text-base font-medium text-slate-500 dark:text-slate-400 mt-2">
+            {/*<p className="text-base font-medium text-slate-500 dark:text-slate-400 mt-2">
               Select a season to view results.
-            </p>
+            </p>*/}
           </div>
 
-          <div className="mt-6 sm:mt-0 flex items-center gap-3">
+          <div className="mt-6 md:mt-0 flex items-center gap-3">
             
             {/* COLUMNS VISIBILITY CONFIGURATOR DROPDOWN */}
             <div className="relative">
@@ -156,7 +221,7 @@ export default function Tournaments() {
             {filteredTournaments.length === 0 ? (
               <div className="text-center py-12 text-slate-400 italic bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800">No records found.</div>
             ) : (
-              filteredTournaments.map((t) => (
+              sortedTournaments.map((t) => (
                 <div key={t.id} className="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 flex flex-col gap-3">
                   <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
                     <h3 className="font-black text-lg text-slate-900 dark:text-white leading-tight">{t.event}</h3>
@@ -216,26 +281,60 @@ export default function Tournaments() {
         )}
         {/* --- DESKTOP VIEW: TABLE (Hidden on mobile, visible on md and up) --- */}
         {tournaments && (
-          <div className="hidden md:block w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40">
+          <div className="hidden md:block w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40 transition-colors duration-300 ease-out">
             <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 text-[10px] font-black uppercase tracking-widest text-slate-400 h-12">
+                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 text-[10px] font-black uppercase tracking-widest text-slate-400 h-12 transition-colors duration-300 ease-out">
                   <th className="pl-6 py-3 w-1/4">Event</th>
-                  {visibleColumns.dates && <th className="px-4 py-3">Dates</th>}
+                  {visibleColumns.dates && (
+                    <th
+                      scope="col"
+                      aria-sort={sortConfig.key === 'airdate' ? sortConfig.direction : 'none'}
+                      className="px-4 py-3"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => handleSort('airdate')}
+                        className={`inline-flex items-center gap-1.5 uppercase transition-colors cursor-pointer hover:text-orange-600 focus-visible:outline-none focus-visible:text-orange-600 ${
+                          sortConfig.key === 'airdate' ? 'text-orange-600 dark:text-orange-400' : ''
+                        }`}
+                      >
+                        <span>Dates</span>
+                        <DateSortIcon aria-hidden="true" className="w-3.5 h-3.5" />
+                      </button>
+                    </th>
+                  )}
                   {visibleColumns.location && <th className="px-4 py-3">Location</th>}
                   {visibleColumns.winner && <th className="px-4 py-3">Winner</th>}
                   {visibleColumns.oil && <th className="px-4 py-3">Oil Pattern</th>}
-                  {visibleColumns.prize_money && <th className="px-4 py-3">Prize Money</th>}
+                  {visibleColumns.prize_money && (
+                    <th
+                      scope="col"
+                      aria-sort={sortConfig.key === 'prize_money' ? sortConfig.direction : 'none'}
+                      className="px-4 py-3"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => handleSort('prize_money')}
+                        className={`inline-flex items-center gap-1.5 uppercase transition-colors cursor-pointer hover:text-orange-600 focus-visible:outline-none focus-visible:text-orange-600 ${
+                          sortConfig.key === 'prize_money' ? 'text-orange-600 dark:text-orange-400' : ''
+                        }`}
+                      >
+                        <span>Prize Money</span>
+                        <PrizeSortIcon aria-hidden="true" className="w-3.5 h-3.5" />
+                      </button>
+                    </th>
+                  )}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60 text-sm font-medium">
+              <tbody className="divide-y text-sm font-medium">
                 {filteredTournaments.length === 0 ? (
                   <tr>
-                    <td colSpan="10" className="text-center py-12 text-slate-400 italic">No records found.</td>
+                    <td colSpan="5" className="text-center py-12 text-slate-400 italic">No records found.</td>
                   </tr>
                 ) : (
-                  filteredTournaments.map((t) => (
-                    <tr key={t.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors h-16 group">
+                  sortedTournaments.map((t) => (
+                    <tr key={t.id} className="border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors duration-300 ease-out h-16 group">
                       <td className="pl-6 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">{t.event}</td>
                       {visibleColumns.dates && <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{t.airdate}</td>}
                       {visibleColumns.location && <td className="px-4 py-4 text-slate-600 dark:text-slate-400">{t.city}</td>}
