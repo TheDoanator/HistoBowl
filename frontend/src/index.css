@@ -1,3 +1,8 @@
 @import "tailwindcss";
 
 @variant dark (&:where(.dark, .dark *));
+
+html,
+body {
+  overscroll-behavior-y: none;
+}
