@@ -187,22 +187,22 @@ function BroadcastTicker() {
   ];
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-10 xl:h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-[background-color,border-color,color] duration-300 ease-out">
-      <div className="bg-orange-600 text-white px-4 xl:px-6 h-full flex items-center font-black text-[10px] xl:text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">News</div>
+    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-10 2xl:h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-[background-color,border-color,color] duration-300 ease-out">
+      <div className="bg-orange-600 text-white px-4 2xl:px-6 h-full flex items-center font-black text-[10px] 2xl:text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">News</div>
       <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-100 dark:bg-slate-950 transition-[background-color,border-color,color] duration-300 ease-out">
         <div className="animate-marquee whitespace-nowrap flex w-max items-center">
           {[0, 1, 2, 3].map((group) => (
             <div
               key={group}
               aria-hidden={group > 0}
-              className="flex shrink-0 items-center gap-8 xl:gap-12 pr-8 xl:pr-12"
+              className="flex shrink-0 items-center gap-8 2xl:gap-12 pr-8 2xl:pr-12"
             >
               {newsItems.map((news, i) => (
                 <span
                   key={i}
-                  className="text-slate-700 dark:text-slate-300 text-xs xl:text-sm font-semibold uppercase flex items-center gap-2 xl:gap-3 transition-[background-color,border-color,color] duration-300 ease-out"
+                  className="text-slate-700 dark:text-slate-300 text-xs 2xl:text-sm font-semibold uppercase flex items-center gap-2 2xl:gap-3 transition-[background-color,border-color,color] duration-300 ease-out"
                 >
-                  <span className="text-orange-500 text-[8px] xl:text-[10px]">●</span>
+                  <span className="text-orange-500 text-[8px] 2xl:text-[10px]">●</span>
                   {news}
                 </span>
               ))}
@@ -210,7 +210,7 @@ function BroadcastTicker() {
           ))}
         </div>
       </div>
-      <div className="flex bg-slate-50 dark:bg-black px-2 xl:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] xl:text-[10px] font-mono text-slate-500 transition-[background-color,border-color,color] duration-300 ease-out">v0.6.0-ALPHA</div>
+      <div className="flex bg-slate-50 dark:bg-black px-2 2xl:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] 2xl:text-[10px] font-mono text-slate-500 transition-[background-color,border-color,color] duration-300 ease-out">v0.6.0-ALPHA</div>
     </footer>
   );
 }
