@@ -1,5 +1,5 @@
 import './App.css'
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Construction, Sun, Moon, Menu, X } from 'lucide-react'; 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import our router tools
 import Home from './pages/Home';
@@ -34,10 +34,6 @@ function App() {
   };
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isNavbarFixed, setIsNavbarFixed] = useState(false);
-  const [navbarHeight, setNavbarHeight] = useState(64);
-  const navbarSentinelRef = useRef(null);
-  const navbarRef = useRef(null);
 
   useEffect(() => {
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
@@ -50,33 +46,6 @@ function App() {
       );
     }
   }, [theme]);
-
-  useEffect(() => {
-    const sentinel = navbarSentinelRef.current;
-    if (!sentinel) return undefined;
-
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsNavbarFixed(!entry.isIntersecting && entry.boundingClientRect.top < 0);
-    });
-
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const navbar = navbarRef.current;
-    if (!navbar) return undefined;
-
-    const updateNavbarHeight = () => {
-      setNavbarHeight(navbar.getBoundingClientRect().height);
-    };
-
-    updateNavbarHeight();
-    const observer = new ResizeObserver(updateNavbarHeight);
-    observer.observe(navbar);
-
-    return () => observer.disconnect();
-  }, []);
 
   return (
     // 1. Wrap everything in BrowserRouter so routing works across the whole app
@@ -91,14 +60,7 @@ function App() {
         </div>
 
         {/* Global Navbar */}
-        <div ref={navbarSentinelRef} aria-hidden="true" className="h-px -mb-px shrink-0" />
-        {isNavbarFixed && (
-          <div aria-hidden="true" className="shrink-0" style={{ height: navbarHeight }} />
-        )}
-        <nav
-          ref={navbarRef}
-          className={`${isNavbarFixed ? 'fixed top-0 inset-x-0' : 'relative'} z-40 border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none`}
-        >
+        <nav className="sticky top-0 z-40 border-b bg-white/95 dark:bg-slate-900/95 border-slate-200 dark:border-slate-800 transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none">
           <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex justify-between h-16 items-center">
             
             {/* Clicking the Logo takes you Home */}
