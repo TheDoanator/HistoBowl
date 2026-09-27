@@ -187,7 +187,7 @@ function BroadcastTicker() {
   ];
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-[background-color,border-color,color] duration-300 ease-out">
+    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-10 xl:h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-[background-color,border-color,color] duration-300 ease-out">
       <div className="bg-orange-600 text-white px-4 xl:px-6 h-full flex items-center font-black text-[10px] xl:text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">News</div>
       <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-100 dark:bg-slate-950 transition-[background-color,border-color,color] duration-300 ease-out">
         <div className="animate-marquee whitespace-nowrap flex w-max items-center">
