@@ -36,7 +36,8 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNavbarFixed, setIsNavbarFixed] = useState(false);
   const [navbarHeight, setNavbarHeight] = useState(64);
-  const navbarSentinelRef = useRef(null);
+  const isNavbarFixedRef = useRef(false);
+  const navbarTopRef = useRef(0);
   const navbarRef = useRef(null);
 
   useEffect(() => {
@@ -52,15 +53,23 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
-    const sentinel = navbarSentinelRef.current;
-    if (!sentinel) return undefined;
+    const navbar = navbarRef.current;
+    if (!navbar) return undefined;
 
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsNavbarFixed(!entry.isIntersecting && entry.boundingClientRect.top < 0);
-    });
+    navbarTopRef.current = navbar.getBoundingClientRect().top + window.scrollY;
 
-    observer.observe(sentinel);
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      const shouldBeFixed = Math.max(window.scrollY, 0) >= navbarTopRef.current;
+      if (shouldBeFixed === isNavbarFixedRef.current) return;
+
+      isNavbarFixedRef.current = shouldBeFixed;
+      setIsNavbarFixed(shouldBeFixed);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -91,7 +100,6 @@ function App() {
         </div>
 
         {/* Global Navbar */}
-        <div ref={navbarSentinelRef} aria-hidden="true" className="h-px -mb-px shrink-0" />
         {isNavbarFixed && (
           <div aria-hidden="true" className="shrink-0" style={{ height: navbarHeight }} />
         )}
