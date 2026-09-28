@@ -1,3 +1,4 @@
+import FadeIn from '../components/FadeIn';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -133,7 +134,7 @@ export default function Players() {
   
   //Main page
   return (
-    <div>
+    <FadeIn>
       <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between pb-6 mb-6">
           <h1 className="text-5xl font-black italic tracking-tight uppercase text-slate-900 dark:text-white">
@@ -321,6 +322,6 @@ export default function Players() {
           </div>
         )}
       </div>
-    </div>
+    </FadeIn>
   )
 }

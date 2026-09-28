@@ -165,7 +165,6 @@ function App() {
         </footer>
 
         {/* Global Scrolling Ticker*/}
-        <BroadcastTicker/>
 
       </div>
     </BrowserRouter>
