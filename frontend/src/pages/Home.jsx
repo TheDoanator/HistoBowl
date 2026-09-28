@@ -1,4 +1,3 @@
-import FadeIn from '../components/FadeIn';
 import { Link } from 'react-router-dom';
 
 const historySources = [
@@ -27,7 +26,7 @@ const mobileFlowPaths = [
 
 function Home() {
   return (
-    <FadeIn>
+    <div>
       <section className="flex flex-col items-start mt-2 sm:mt-6 lg:mt-8 py-4 sm:py-6 lg:py-8 w-full max-w-[90%] mx-auto px-2 sm:px-4 text-left">
         <h1 className="text-[clamp(3rem,14vw,3.5rem)] sm:text-[clamp(2.75rem,7.5vw,7.25rem)] leading-[0.82] font-black italic tracking-tight text-slate-900 dark:text-white transition-[background-color,border-color,color] duration-300 ease-out">
           THIS IS
@@ -306,7 +305,7 @@ function Home() {
           </p>
         </div>
       </footer>
-    </FadeIn>
+    </div>
   );
 }
 
