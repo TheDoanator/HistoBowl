@@ -61,7 +61,91 @@ function App() {
 
         {/* Global Navbar */}
         <nav className="sticky top-0 z-40 bg-white dark:bg-slate-900">
-          <div className="h-16">TEST NAVBAR</div>
+          <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex justify-between h-16 items-center">
+            
+            {/* Clicking the Logo takes you Home */}
+            <Link to="/" className="flex items-center gap-1 cursor-pointer select-none group">
+              <img 
+                src="/favicon.png" 
+                alt="HistoBowl Logo" 
+                className="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+              <span className="text-xl font-black italic tracking-tighter text-slate-900 dark:text-white">
+                HISTOBOWL
+              </span>
+            </Link>
+
+            {/* Desktop nav links - hidden below md, shown at md and up */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link to="/" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
+                HOME
+              </Link>
+              <Link to="/tournaments" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
+                TOURNAMENTS
+              </Link>
+              <Link to="/players" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
+                PLAYERS
+              </Link>
+              <button 
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
+                aria-label="Toggle Dark Mode"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+            </div>
+
+            {/* Mobile controls - theme toggle + hamburger, shown below md only */}
+            <div className="flex md:hidden items-center gap-2">
+              <button 
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
+                aria-label="Toggle Dark Mode"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+              <button
+                onClick={() => setIsMenuOpen((prev) => !prev)}
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
+                aria-label="Toggle Menu"
+                aria-expanded={isMenuOpen}
+              >
+                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+
+          
+          {/* Mobile dropdown menu */}
+          <div
+            className={`md:hidden overflow-hidden bg-white/95 dark:bg-slate-900/95 transition-[max-height,opacity] duration-300 ease-out ${
+              isMenuOpen ? 'max-h-40 opacity-100 border-t border-slate-200 dark:border-slate-800' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex flex-col py-4 gap-4">
+              <Link 
+                to="/" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
+              >
+                HOME
+              </Link>
+              <Link 
+                to="/tournaments" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
+              >
+                TOURNAMENTS
+              </Link>
+              <Link
+                to="/players"
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
+              >
+                PLAYERS
+              </Link>
+            </div>
+          </div>
         </nav>
 
         {/* Dynamic Section */}
