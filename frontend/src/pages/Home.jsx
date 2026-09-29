@@ -102,7 +102,7 @@ function Home() {
                     Tournaments
                   </h3>
                   <span className="shrink-0 rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-2.5 py-1 text-[9px] font-black tracking-[0.16em] text-emerald-700 dark:text-emerald-300 uppercase transition-[background-color,border-color,color] duration-300 ease-out">
-                    Complete
+                    Up to Date
                   </span>
                 </div>
                 <p className="mt-1.5 pr-1 text-xs sm:text-sm leading-relaxed text-slate-500 dark:text-slate-400 transition-[background-color,border-color,color] duration-300 ease-out">
