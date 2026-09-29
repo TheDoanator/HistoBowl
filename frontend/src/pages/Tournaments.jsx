@@ -13,6 +13,15 @@ import {
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 
+function getPrizeMoneySortValue(value) {
+  const amountMatch = String(value).trim().match(/^\$\s*([0-9][0-9,]*(?:\.[0-9]+)?)/);
+
+  if (!amountMatch) return null;
+
+  const prizeMoney = Number.parseFloat(amountMatch[1].replace(/,/g, ''));
+  return Number.isNaN(prizeMoney) ? null : prizeMoney;
+}
+
 function getTournamentSortValue(tournament, key) {
   const value = tournament[key];
 
@@ -21,8 +30,7 @@ function getTournamentSortValue(tournament, key) {
   }
 
   if (key === 'prize_money') {
-    const prizeMoney = Number.parseFloat(String(value).replace(/[^0-9.-]/g, ''));
-    return Number.isNaN(prizeMoney) ? null : prizeMoney;
+    return getPrizeMoneySortValue(value);
   }
 
   const dateText = String(value).trim();
@@ -87,7 +95,15 @@ export default function Tournaments() {
         const valueA = getTournamentSortValue(tournamentA, sortConfig.key);
         const valueB = getTournamentSortValue(tournamentB, sortConfig.key);
 
-        if (valueA === null && valueB === null) return 0;
+        if (valueA === null && valueB === null) {
+          if (sortConfig.key !== 'prize_money') return 0;
+
+          return String(tournamentA.prize_money ?? '').localeCompare(
+            String(tournamentB.prize_money ?? ''),
+            undefined,
+            { sensitivity: 'base' },
+          );
+        }
         if (valueA === null) return 1;
         if (valueB === null) return -1;
 
