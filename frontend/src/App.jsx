@@ -1,12 +1,15 @@
 import './App.css'
-import { useState, useEffect } from 'react';
-import { Construction, Sun, Moon, Menu, X } from 'lucide-react'; 
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { Sun, Moon, Menu, X } from 'lucide-react'; 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import our router tools
 import Home from './pages/Home';
 import Tournaments from './pages/Tournaments';
 import Players  from './pages/Players';
+import AlphaBanner from './components/AlphaBanner';
 
 function App() {
+  const fixedHeaderRef = useRef(null);
+  const headerSpacerRef = useRef(null);
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
@@ -47,12 +50,26 @@ function App() {
     }
   }, [theme]);
 
+  useLayoutEffect(() => {
+    const updateHeaderSpacing = () => {
+      if (!fixedHeaderRef.current || !headerSpacerRef.current) return;
+      headerSpacerRef.current.style.height = `${fixedHeaderRef.current.getBoundingClientRect().height}px`;
+    };
+
+    updateHeaderSpacing();
+    const resizeObserver = new ResizeObserver(updateHeaderSpacing);
+    resizeObserver.observe(fixedHeaderRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
   return (
     // 1. Wrap everything in BrowserRouter so routing works across the whole app
     <BrowserRouter>
       <div className='min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-[background-color] duration-300 ease-out flex flex-col pb-12'>
-        {/* Global Navbar */}
-        <nav className="fixed top-0 inset-x-0 z-40 border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none">
+        <header ref={fixedHeaderRef} className="fixed top-0 inset-x-0 z-40">
+          {/* Global Navbar */}
+          <nav className="border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none">
           <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex justify-between h-16 items-center">
             
             {/* Clicking the Logo takes you Home */}
@@ -138,9 +155,12 @@ function App() {
               </Link>
             </div>
           </div>
-        </nav>
+          </nav>
 
-        <div className="h-16 shrink-0" aria-hidden="true" />
+          <AlphaBanner />
+        </header>
+
+        <div ref={headerSpacerRef} className="shrink-0" aria-hidden="true" />
 
         {/* Dynamic Section */}
         <main className="flex-1 py-12 sm:py-16">
@@ -157,11 +177,6 @@ function App() {
             <p className="text-xs font-medium text-slate-400 select-none tracking-wide">
               &copy; 2026 HistoBowl. All rights reserved.
             </p>
-          </div>
-
-          <div className="w-full bg-amber-100 dark:bg-amber-900 py-2 text-center text-[10px] sm:text-xs font-medium text-amber-800 dark:text-amber-400 flex items-center justify-center gap-1 border-t dark:border-amber-900/20">
-            <Construction className="w-3 h-3" />
-            <span>HistoBowl is in alpha. Many features are incomplete or missing. Expect updates soon!</span>
           </div>
         </footer>
 
