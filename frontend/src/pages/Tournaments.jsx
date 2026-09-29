@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import FadeIn from '../components/FadeIn';
 import {
   ArrowDown,
   ArrowUp,
@@ -118,7 +117,7 @@ export default function Tournaments() {
 
   // 5. MAIN RENDER
   return (
-    <FadeIn>
+    <div>
       <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4">
         
         {/* Header Block & Selector Configurations */}
@@ -349,6 +348,6 @@ export default function Tournaments() {
           </div>
         )}
       </div>
-    </FadeIn>
+    </div>
   );
 }
