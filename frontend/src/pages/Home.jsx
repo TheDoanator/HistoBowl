@@ -38,7 +38,7 @@ function Home() {
         </h2>
 
         <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-8 xl:gap-12 w-full mt-10 sm:mt-14 lg:mt-16">
-          <p className="max-w-xl pl-4 sm:pl-6 border-l-2 border-orange-600 text-sm sm:text-lg lg:text-xl leading-relaxed text-slate-600 dark:text-slate-400 font-medium transition-[background-color,border-color,color] duration-300 ease-out">
+          <p className="max-w-xl pl-4 sm:pl-6 border-l-2 border-orange-600 text-sm sm:text-lg lg:text-xl leading-normal text-slate-700 dark:text-slate-300 font-medium transition-[background-color,border-color,color] duration-300 ease-out">
             Explore the history of professional bowling through decades of PBA tournaments, players, titles, and earnings, all in one growing archive.
           </p>
 
