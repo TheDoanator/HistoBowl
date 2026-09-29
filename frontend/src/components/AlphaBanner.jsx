@@ -7,9 +7,12 @@ function AlphaBanner({ className = '' }) {
   if (!isVisible) return null;
 
   return (
-    <div className={`relative w-full bg-amber-100 dark:bg-amber-900 py-2 text-center text-[10px] sm:text-xs font-medium text-amber-800 dark:text-amber-400 flex items-center justify-center gap-1 border-b dark:border-amber-900/20 ${className}`}>
+    <div className={`relative w-full bg-amber-100 dark:bg-amber-900 py-2 pl-3 pr-10 sm:px-12 text-center text-[10px] sm:text-xs font-medium text-amber-800 dark:text-amber-400 flex items-center justify-center gap-1 border-b dark:border-amber-900/20 ${className}`}>
       <Construction className="w-3 h-3" />
-      <span>HistoBowl is in alpha. Many features are incomplete or missing. Expect updates soon!</span>
+      <span className="flex flex-col sm:block">
+        <span>HistoBowl is in alpha.</span>
+        <span>{' '}Many features are incomplete or missing. Expect updates soon!</span>
+      </span>
       <button
         type="button"
         onClick={() => setIsVisible(false)}
