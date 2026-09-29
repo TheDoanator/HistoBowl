@@ -1,5 +1,5 @@
 import './App.css'
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Construction, Sun, Moon, Menu, X } from 'lucide-react'; 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import our router tools
 import Home from './pages/Home';
@@ -7,8 +7,6 @@ import Tournaments from './pages/Tournaments';
 import Players  from './pages/Players';
 
 function App() {
-  const normalNavbarRef = useRef(null);
-  const [showFixedNavbar, setShowFixedNavbar] = useState(false);
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
@@ -35,6 +33,8 @@ function App() {
       setTheme(nextTheme);
   };
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   useEffect(() => {
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
@@ -47,24 +47,13 @@ function App() {
     }
   }, [theme]);
 
-  useEffect(() => {
-    const updateFixedNavbar = () => {
-      if (!normalNavbarRef.current) return;
-      setShowFixedNavbar(window.scrollY > normalNavbarRef.current.offsetTop);
-    };
-
-    updateFixedNavbar();
-    window.addEventListener('scroll', updateFixedNavbar, { passive: true });
-    return () => window.removeEventListener('scroll', updateFixedNavbar);
-  }, []);
-
   return (
     // 1. Wrap everything in BrowserRouter so routing works across the whole app
     <BrowserRouter>
       <div className='min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-[background-color] duration-300 ease-out flex flex-col pb-12'>
-        {showFixedNavbar && (
-          <Navbar isFixed theme={theme} toggleTheme={toggleTheme} />
-        )}
+        <div className="fixed top-0 left-0 z-[9999] bg-red-500 text-white p-2">
+          FIXED TEST
+        </div>
 
         {/* Global Banner */}
         <div className='w-full'>
@@ -74,13 +63,94 @@ function App() {
           </div>
         </div>
 
-        {/* Normal-flow navbar */}
-        <Navbar
-          navbarRef={normalNavbarRef}
-          isInactive={showFixedNavbar}
-          theme={theme}
-          toggleTheme={toggleTheme}
-        />
+        {/* Global Navbar */}
+        <nav className="sticky top-0 z-40 border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none">
+          <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex justify-between h-16 items-center">
+            
+            {/* Clicking the Logo takes you Home */}
+            <Link to="/" className="flex items-center gap-1 cursor-pointer select-none group">
+              <img 
+                src="/favicon.png" 
+                alt="HistoBowl Logo" 
+                className="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+              <span className="text-xl font-black italic tracking-tighter text-slate-900 dark:text-white">
+                HISTOBOWL
+              </span>
+            </Link>
+
+            {/* Desktop nav links - hidden below md, shown at md and up */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link to="/" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
+                HOME
+              </Link>
+              <Link to="/tournaments" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
+                TOURNAMENTS
+              </Link>
+              <Link to="/players" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
+                PLAYERS
+              </Link>
+              <button 
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
+                aria-label="Toggle Dark Mode"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+            </div>
+
+            {/* Mobile controls - theme toggle + hamburger, shown below md only */}
+            <div className="flex md:hidden items-center gap-2">
+              <button 
+                onClick={toggleTheme}
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
+                aria-label="Toggle Dark Mode"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+              <button
+                onClick={() => setIsMenuOpen((prev) => !prev)}
+                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
+                aria-label="Toggle Menu"
+                aria-expanded={isMenuOpen}
+              >
+                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+
+          
+          {/* Mobile dropdown menu */}
+          <div
+            className={`md:hidden overflow-hidden bg-white/95 dark:bg-slate-900/95 transition-[max-height,opacity] duration-300 ease-out ${
+              isMenuOpen ? 'max-h-40 opacity-100 border-t border-slate-200 dark:border-slate-800' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex flex-col py-4 gap-4">
+              <Link 
+                to="/" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
+              >
+                HOME
+              </Link>
+              <Link 
+                to="/tournaments" 
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
+              >
+                TOURNAMENTS
+              </Link>
+              <Link
+                to="/players"
+                onClick={() => setIsMenuOpen(false)}
+                className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
+              >
+                PLAYERS
+              </Link>
+            </div>
+          </div>
+        </nav>
 
         {/* Dynamic Section */}
         <main className="flex-1 py-12 sm:py-16">
@@ -103,103 +173,6 @@ function App() {
 
       </div>
     </BrowserRouter>
-  );
-}
-
-function Navbar({ isFixed = false, isInactive = false, navbarRef, theme, toggleTheme }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  return (
-    <nav
-      ref={navbarRef}
-      aria-hidden={isInactive || undefined}
-      inert={isInactive || undefined}
-      className={`${isFixed ? 'fixed top-0 inset-x-0 z-40 ' : ''}border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none`}
-    >
-      <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex justify-between h-16 items-center">
-        {/* Clicking the Logo takes you Home */}
-        <Link to="/" className="flex items-center gap-1 cursor-pointer select-none group">
-          <img
-            src="/favicon.png"
-            alt="HistoBowl Logo"
-            className="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-105"
-          />
-          <span className="text-xl font-black italic tracking-tighter text-slate-900 dark:text-white">
-            HISTOBOWL
-          </span>
-        </Link>
-
-        {/* Desktop nav links - hidden below md, shown at md and up */}
-        <div className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
-            HOME
-          </Link>
-          <Link to="/tournaments" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
-            TOURNAMENTS
-          </Link>
-          <Link to="/players" className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600">
-            PLAYERS
-          </Link>
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
-            aria-label="Toggle Dark Mode"
-          >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </button>
-        </div>
-
-        {/* Mobile controls - theme toggle + hamburger, shown below md only */}
-        <div className="flex md:hidden items-center gap-2">
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
-            aria-label="Toggle Dark Mode"
-          >
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </button>
-          <button
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all duration-300 cursor-pointer"
-            aria-label="Toggle Menu"
-            aria-expanded={isMenuOpen}
-          >
-            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile dropdown menu */}
-      <div
-        className={`md:hidden overflow-hidden bg-white/95 dark:bg-slate-900/95 transition-[max-height,opacity] duration-300 ease-out ${
-          isMenuOpen ? 'max-h-40 opacity-100 border-t border-slate-200 dark:border-slate-800' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex flex-col py-4 gap-4">
-          <Link
-            to="/"
-            onClick={() => setIsMenuOpen(false)}
-            className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
-          >
-            HOME
-          </Link>
-          <Link
-            to="/tournaments"
-            onClick={() => setIsMenuOpen(false)}
-            className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
-          >
-            TOURNAMENTS
-          </Link>
-          <Link
-            to="/players"
-            onClick={() => setIsMenuOpen(false)}
-            className="text-sm font-black italic tracking-wide uppercase hover:text-orange-600"
-          >
-            PLAYERS
-          </Link>
-        </div>
-      </div>
-    </nav>
   );
 }
 
