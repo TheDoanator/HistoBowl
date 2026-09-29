@@ -50,7 +50,7 @@ function App() {
   return (
     // 1. Wrap everything in BrowserRouter so routing works across the whole app
     <BrowserRouter>
-      <div className='min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-[background-color] duration-300 ease-out flex flex-col pb-12'>
+      <div className='min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-[background-color] duration-300 ease-out pb-12'>
         {/* Global Banner */}
         <div className='w-full'>
           <div className='bg-amber-100 dark:bg-amber-900 py-2 text-center text-[10px] sm:text-xs font-medium text-amber-800 dark:text-amber-400 flex items-center justify-center gap-1 border-b dark:border-amber-900/20'>
