@@ -298,10 +298,10 @@ export default function Tournaments() {
         {/* --- DESKTOP VIEW: TABLE (Hidden on mobile, visible on md and up) --- */}
         {tournaments && (
           <div className="hidden md:block w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40 transition-colors duration-300 ease-out">
-            <table className="w-full text-left border-collapse min-w-[800px]">
+            <table className="w-full table-fixed text-left border-collapse min-w-[800px]">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 text-[10px] font-black uppercase tracking-widest text-slate-400 h-12 transition-colors duration-300 ease-out">
-                  <th className="pl-6 py-3 w-1/4">Event</th>
+                  <th className="pl-6 py-3">Event</th>
                   {visibleColumns.dates && (
                     <th
                       scope="col"
