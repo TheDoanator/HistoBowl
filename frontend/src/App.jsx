@@ -211,7 +211,7 @@ function BroadcastTicker() {
           ))}
         </div>
       </div>
-      <div className="flex bg-slate-50 dark:bg-black px-2 2xl:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] 2xl:text-[10px] font-mono text-slate-500 transition-[background-color,border-color,color] duration-300 ease-out">v0.6.0-ALPHA</div>
+      <div className="flex bg-slate-50 dark:bg-black px-2 2xl:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] 2xl:text-[10px] font-mono text-slate-500 transition-[background-color,border-color,color] duration-300 ease-out">v0.6.1-ALPHA</div>
     </footer>
   );
 }
