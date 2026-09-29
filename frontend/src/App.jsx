@@ -1,12 +1,15 @@
 import './App.css'
-import { useState, useEffect } from 'react';
-import { Construction, Sun, Moon, Menu, X } from 'lucide-react'; 
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { Sun, Moon, Menu, X } from 'lucide-react'; 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import our router tools
 import Home from './pages/Home';
 import Tournaments from './pages/Tournaments';
 import Players  from './pages/Players';
+import AlphaBanner from './components/AlphaBanner';
 
 function App() {
+  const fixedHeaderRef = useRef(null);
+  const headerSpacerRef = useRef(null);
   const [theme, setTheme] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
@@ -47,20 +50,26 @@ function App() {
     }
   }, [theme]);
 
+  useLayoutEffect(() => {
+    const updateHeaderSpacing = () => {
+      if (!fixedHeaderRef.current || !headerSpacerRef.current) return;
+      headerSpacerRef.current.style.height = `${fixedHeaderRef.current.getBoundingClientRect().height}px`;
+    };
+
+    updateHeaderSpacing();
+    const resizeObserver = new ResizeObserver(updateHeaderSpacing);
+    resizeObserver.observe(fixedHeaderRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
   return (
     // 1. Wrap everything in BrowserRouter so routing works across the whole app
     <BrowserRouter>
       <div className='min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-[background-color] duration-300 ease-out flex flex-col pb-12'>
-        {/* Global Banner */}
-        <div className='w-full'>
-          <div className='bg-amber-100 dark:bg-amber-900 py-2 text-center text-[10px] sm:text-xs font-medium text-amber-800 dark:text-amber-400 flex items-center justify-center gap-1 border-b dark:border-amber-900/20'>
-            <Construction className="w-3 h-3" />
-            <span>HistoBowl is in alpha. Many features are incomplete or missing. Expect updates soon!</span>
-          </div>
-        </div>
-
-        {/* Global Navbar */}
-        <nav className="sticky top-0 z-40 border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none">
+        <header ref={fixedHeaderRef} className="fixed top-0 inset-x-0 z-40">
+          {/* Global Navbar */}
+          <nav className="border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none">
           <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex justify-between h-16 items-center">
             
             {/* Clicking the Logo takes you Home */}
@@ -146,7 +155,12 @@ function App() {
               </Link>
             </div>
           </div>
-        </nav>
+          </nav>
+
+          <AlphaBanner />
+        </header>
+
+        <div ref={headerSpacerRef} className="shrink-0" aria-hidden="true" />
 
         {/* Dynamic Section */}
         <main className="flex-1 py-12 sm:py-16">
@@ -158,10 +172,12 @@ function App() {
         </main>
 
         {/* Copyright Footer - Sits safely above the fixed ticker banner */}
-        <footer className="w-full py-6 mt-auto flex justify-center items-center border-t border-slate-200/50 dark:border-slate-800/50 transition-[border-color] duration-300 ease-out">
-          <p className="text-xs font-medium text-slate-400 select-none tracking-wide">
-            &copy; 2026 HistoBowl. All rights reserved.
-          </p>
+        <footer className="w-full mt-auto">
+          <div data-global-copyright className="w-full py-6 flex justify-center items-center border-t border-slate-200/50 dark:border-slate-800/50 transition-[border-color] duration-300 ease-out">
+            <p className="text-xs font-medium text-slate-400 select-none tracking-wide">
+              &copy; 2026 HistoBowl. All rights reserved.
+            </p>
+          </div>
         </footer>
 
         {/* Global Scrolling Ticker*/}
@@ -187,22 +203,22 @@ function BroadcastTicker() {
   ];
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-[background-color,border-color,color] duration-300 ease-out">
-      <div className="bg-orange-600 text-white px-4 md:px-6 h-full flex items-center font-black text-[10px] md:text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">News</div>
+    <footer className="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800 h-10 2xl:h-12 flex items-center overflow-hidden z-50 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] dark:shadow-[0_-8px_24px_rgba(0,0,0,0.3)] transition-[background-color,border-color,color] duration-300 ease-out">
+      <div className="bg-orange-600 text-white px-4 2xl:px-6 h-full flex items-center font-black text-[10px] 2xl:text-xs uppercase tracking-widest shrink-0 z-10 shadow-lg">News</div>
       <div className="flex-1 overflow-hidden relative h-full flex items-center bg-slate-100 dark:bg-slate-950 transition-[background-color,border-color,color] duration-300 ease-out">
         <div className="animate-marquee whitespace-nowrap flex w-max items-center">
           {[0, 1, 2, 3].map((group) => (
             <div
               key={group}
               aria-hidden={group > 0}
-              className="flex shrink-0 items-center gap-8 md:gap-12 pr-8 md:pr-12"
+              className="flex shrink-0 items-center gap-8 2xl:gap-12 pr-8 2xl:pr-12"
             >
               {newsItems.map((news, i) => (
                 <span
                   key={i}
-                  className="text-slate-700 dark:text-slate-300 text-xs md:text-sm font-semibold uppercase flex items-center gap-2 md:gap-3 transition-[background-color,border-color,color] duration-300 ease-out"
+                  className="text-slate-700 dark:text-slate-300 text-xs 2xl:text-sm font-semibold uppercase flex items-center gap-2 2xl:gap-3 transition-[background-color,border-color,color] duration-300 ease-out"
                 >
-                  <span className="text-orange-500 text-[8px] md:text-[10px]">●</span>
+                  <span className="text-orange-500 text-[8px] 2xl:text-[10px]">●</span>
                   {news}
                 </span>
               ))}
@@ -210,7 +226,7 @@ function BroadcastTicker() {
           ))}
         </div>
       </div>
-      <div className="flex bg-slate-50 dark:bg-black px-2 md:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] md:text-[10px] font-mono text-slate-500 transition-[background-color,border-color,color] duration-300 ease-out">v0.6.0-ALPHA</div>
+      <div className="flex bg-slate-50 dark:bg-black px-2 2xl:px-4 h-full items-center border-l border-slate-200 dark:border-slate-800 text-[8px] 2xl:text-[10px] font-mono text-slate-500 transition-[background-color,border-color,color] duration-300 ease-out">v0.6.1-ALPHA</div>
     </footer>
   );
 }
