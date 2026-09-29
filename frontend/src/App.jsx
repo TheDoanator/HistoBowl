@@ -51,16 +51,8 @@ function App() {
     // 1. Wrap everything in BrowserRouter so routing works across the whole app
     <BrowserRouter>
       <div className='min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 transition-[background-color] duration-300 ease-out flex flex-col pb-12'>
-        {/* Global Banner */}
-        <div className='w-full'>
-          <div className='bg-amber-100 dark:bg-amber-900 py-2 text-center text-[10px] sm:text-xs font-medium text-amber-800 dark:text-amber-400 flex items-center justify-center gap-1 border-b dark:border-amber-900/20'>
-            <Construction className="w-3 h-3" />
-            <span>HistoBowl is in alpha. Many features are incomplete or missing. Expect updates soon!</span>
-          </div>
-        </div>
-
         {/* Global Navbar */}
-        <nav className="sticky top-0 z-40 border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none">
+        <nav className="fixed top-0 inset-x-0 z-40 border-b bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm transition-[background-color,border-color] duration-300 ease-out shadow-[0_8px_24px_rgba(15,23,42,0.08)] dark:shadow-none">
           <div className="max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 flex justify-between h-16 items-center">
             
             {/* Clicking the Logo takes you Home */}
@@ -148,6 +140,8 @@ function App() {
           </div>
         </nav>
 
+        <div className="h-16 shrink-0" aria-hidden="true" />
+
         {/* Dynamic Section */}
         <main className="flex-1 py-12 sm:py-16">
           <Routes>
@@ -158,10 +152,17 @@ function App() {
         </main>
 
         {/* Copyright Footer - Sits safely above the fixed ticker banner */}
-        <footer className="w-full py-6 mt-auto flex justify-center items-center border-t border-slate-200/50 dark:border-slate-800/50 transition-[border-color] duration-300 ease-out">
-          <p className="text-xs font-medium text-slate-400 select-none tracking-wide">
-            &copy; 2026 HistoBowl. All rights reserved.
-          </p>
+        <footer className="w-full mt-auto">
+          <div data-global-copyright className="w-full py-6 flex justify-center items-center border-t border-slate-200/50 dark:border-slate-800/50 transition-[border-color] duration-300 ease-out">
+            <p className="text-xs font-medium text-slate-400 select-none tracking-wide">
+              &copy; 2026 HistoBowl. All rights reserved.
+            </p>
+          </div>
+
+          <div className="w-full bg-amber-100 dark:bg-amber-900 py-2 text-center text-[10px] sm:text-xs font-medium text-amber-800 dark:text-amber-400 flex items-center justify-center gap-1 border-t dark:border-amber-900/20">
+            <Construction className="w-3 h-3" />
+            <span>HistoBowl is in alpha. Many features are incomplete or missing. Expect updates soon!</span>
+          </div>
         </footer>
 
         {/* Global Scrolling Ticker*/}
