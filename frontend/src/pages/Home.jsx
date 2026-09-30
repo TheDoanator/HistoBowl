@@ -38,7 +38,7 @@ function Home() {
         </h2>
 
         <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-8 xl:gap-12 w-full mt-10 sm:mt-14 lg:mt-16">
-          <p className="max-w-xl pl-4 sm:pl-6 border-l-2 border-orange-600 text-sm sm:text-lg lg:text-xl leading-relaxed text-slate-600 dark:text-slate-400 font-medium transition-[background-color,border-color,color] duration-300 ease-out">
+          <p className="max-w-xl pl-4 sm:pl-6 border-l-2 border-orange-600 text-sm sm:text-lg lg:text-xl leading-normal text-slate-700 dark:text-slate-300 font-medium transition-[background-color,border-color,color] duration-300 ease-out">
             Explore the history of professional bowling through decades of PBA tournaments, players, titles, and earnings, all in one growing archive.
           </p>
 
@@ -102,7 +102,7 @@ function Home() {
                     Tournaments
                   </h3>
                   <span className="shrink-0 rounded-full bg-emerald-100 dark:bg-emerald-900/50 px-2.5 py-1 text-[9px] font-black tracking-[0.16em] text-emerald-700 dark:text-emerald-300 uppercase transition-[background-color,border-color,color] duration-300 ease-out">
-                    Complete
+                    Up to Date
                   </span>
                 </div>
                 <p className="mt-1.5 pr-1 text-xs sm:text-sm leading-relaxed text-slate-500 dark:text-slate-400 transition-[background-color,border-color,color] duration-300 ease-out">
@@ -196,7 +196,7 @@ function Home() {
               <span aria-hidden="true" className="hb-archive-ring" />
               <div className="relative overflow-hidden border-2 border-orange-600 bg-white dark:bg-slate-950 px-6 py-6 sm:px-7 text-slate-900 dark:text-white transition-[background-color,border-color,color] duration-300 ease-out">
                 <p className="text-[8px] font-black tracking-[0.24em] text-orange-500 uppercase">One Archive</p>
-                <p className="mt-3 text-3xl sm:text-4xl font-black italic tracking-tight uppercase">Histo<span className="text-orange-600">Bowl</span></p>
+                <p className="mt-3 text-3xl sm:text-4xl font-black italic tracking-tight uppercase whitespace-nowrap"><span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-300">HistoBowl</span></p>
                 <p className="mt-5 border-t border-slate-300 dark:border-slate-700 pt-3 text-[8px] font-bold tracking-[0.13em] text-slate-600 dark:text-slate-300 uppercase transition-[background-color,border-color,color] duration-300 ease-out">Searchable · In One Place</p>
               </div>
             </div>
@@ -231,7 +231,7 @@ function Home() {
               <span aria-hidden="true" className="hb-archive-ring" />
               <div className="relative overflow-hidden border-2 border-orange-600 bg-white dark:bg-slate-950 px-8 py-9 xl:px-10 text-slate-900 dark:text-white transition-[background-color,border-color,color] duration-300 ease-out">
                 <p className="text-[9px] font-black tracking-[0.28em] text-orange-500 uppercase">One Archive</p>
-                <p className="mt-4 text-[clamp(2.5rem,3.4vw,3.25rem)] font-black italic tracking-tight uppercase">Histo<span className="text-orange-600">Bowl</span></p>
+                <p className="mt-4 text-[clamp(2.5rem,3.4vw,3.25rem)] font-black italic tracking-tight uppercase whitespace-nowrap"><span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-300">HistoBowl</span></p>
                 <p className="mt-7 border-t border-slate-300 dark:border-slate-700 pt-5 text-[9px] font-bold tracking-[0.15em] text-slate-600 dark:text-slate-300 uppercase transition-[background-color,border-color,color] duration-300 ease-out">Searchable · In One Place</p>
               </div>
             </div>

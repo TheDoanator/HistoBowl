@@ -13,6 +13,15 @@ import {
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 
+function getPrizeMoneySortValue(value) {
+  const amountMatch = String(value).trim().match(/^\$\s*([0-9][0-9,]*(?:\.[0-9]+)?)/);
+
+  if (!amountMatch) return null;
+
+  const prizeMoney = Number.parseFloat(amountMatch[1].replace(/,/g, ''));
+  return Number.isNaN(prizeMoney) ? null : prizeMoney;
+}
+
 function getTournamentSortValue(tournament, key) {
   const value = tournament[key];
 
@@ -21,8 +30,7 @@ function getTournamentSortValue(tournament, key) {
   }
 
   if (key === 'prize_money') {
-    const prizeMoney = Number.parseFloat(String(value).replace(/[^0-9.-]/g, ''));
-    return Number.isNaN(prizeMoney) ? null : prizeMoney;
+    return getPrizeMoneySortValue(value);
   }
 
   const dateText = String(value).trim();
@@ -58,7 +66,7 @@ export default function Tournaments() {
   const [showColumnToggle, setShowColumnToggle] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [visibleColumns, setVisibleColumns] = useState({
-    dates: true,
+    airdate: true,
     location: true,
     winner: true,
     oil: false,
@@ -87,7 +95,15 @@ export default function Tournaments() {
         const valueA = getTournamentSortValue(tournamentA, sortConfig.key);
         const valueB = getTournamentSortValue(tournamentB, sortConfig.key);
 
-        if (valueA === null && valueB === null) return 0;
+        if (valueA === null && valueB === null) {
+          if (sortConfig.key !== 'prize_money') return 0;
+
+          return String(tournamentA.prize_money ?? '').localeCompare(
+            String(tournamentB.prize_money ?? ''),
+            undefined,
+            { sensitivity: 'base' },
+          );
+        }
         if (valueA === null) return 1;
         if (valueB === null) return -1;
 
@@ -237,11 +253,11 @@ export default function Tournaments() {
                         </div>
                       </div>
                     )}
-                    {visibleColumns.dates && (
+                    {visibleColumns.airdate && (
                       <div className="flex items-start gap-2">
                         <Calendar className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Dates</p>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Airdate</p>
                           <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">{t.airdate}</p>
                         </div>
                       </div>
@@ -282,11 +298,11 @@ export default function Tournaments() {
         {/* --- DESKTOP VIEW: TABLE (Hidden on mobile, visible on md and up) --- */}
         {tournaments && (
           <div className="hidden md:block w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40 transition-colors duration-300 ease-out">
-            <table className="w-full text-left border-collapse min-w-[800px]">
+            <table className="w-full table-fixed text-left border-collapse min-w-[800px]">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 text-[10px] font-black uppercase tracking-widest text-slate-400 h-12 transition-colors duration-300 ease-out">
-                  <th className="pl-6 py-3 w-1/4">Event</th>
-                  {visibleColumns.dates && (
+                  <th className="pl-6 py-3">Event</th>
+                  {visibleColumns.airdate && (
                     <th
                       scope="col"
                       aria-sort={sortConfig.key === 'airdate' ? sortConfig.direction : 'none'}
@@ -299,7 +315,7 @@ export default function Tournaments() {
                           sortConfig.key === 'airdate' ? 'text-orange-600 dark:text-orange-400' : ''
                         }`}
                       >
-                        <span>Dates</span>
+                        <span>Airdate</span>
                         <DateSortIcon aria-hidden="true" className="w-3.5 h-3.5" />
                       </button>
                     </th>
@@ -336,7 +352,7 @@ export default function Tournaments() {
                   sortedTournaments.map((t) => (
                     <tr key={t.id} className="border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors duration-300 ease-out h-16 group">
                       <td className="pl-6 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">{t.event}</td>
-                      {visibleColumns.dates && <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{t.airdate}</td>}
+                      {visibleColumns.airdate && <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{t.airdate}</td>}
                       {visibleColumns.location && <td className="px-4 py-4 text-slate-600 dark:text-slate-400">{t.city}</td>}
                       {visibleColumns.winner && <td className="px-4 py-4 font-bold text-orange-600 dark:text-orange-400">{t.winner}</td>}
                       {visibleColumns.oil && <td className="px-4 py-4 text-slate-600 dark:text-slate-400 italic text-xs">{t.oil || 'N/A'}</td>}
