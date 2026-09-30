@@ -28,6 +28,6 @@
   will-change: transform, opacity;
 }
 
-body:has([data-home-profile-footer]) main + footer {
+body:has([data-home-profile-footer]) [data-global-copyright] {
   display: none;
 }
