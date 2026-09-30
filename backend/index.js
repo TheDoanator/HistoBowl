@@ -40,3 +40,21 @@ app.get('/api/players', (req, res) => {
     res.json(rows); // Converts data in JSON
   })
 })
+
+app.get('/api/players/:id', (req, res) => {
+  const sql = 'SELECT * FROM players WHERE id = ?';
+
+  db.get(sql, [req.params.id], (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+
+    if (!row) {
+      res.status(404).json({ error: 'Player not found' });
+      return;
+    }
+
+    res.json(row);
+  });
+});
