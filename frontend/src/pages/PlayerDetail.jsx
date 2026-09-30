@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import FadeIn from '../components/FadeIn';
 
 export default function PlayerDetail() {
   const { id } = useParams();
@@ -20,12 +21,14 @@ export default function PlayerDetail() {
 }
 
 return (
-  <div>
-    <h1>{player.name}</h1>
-    <p>Hometown: {player.hometown}</p>
-    <p>Titles: {player.titles}</p>
-    <p>Earnings: {player.earnings}</p>
-    <p>Active: {player.currently_active ? 'Yes' : 'No'}</p>
-  </div>
+  <FadeIn>
+    <div>
+      <h1>{player.name}</h1>
+      <p>Hometown: {player.hometown}</p>
+      <p>Titles: {player.titles}</p>
+      <p>Earnings: {player.earnings}</p>
+      <p>Active: {player.currently_active ? 'Yes' : 'No'}</p>
+    </div>
+  </FadeIn>
 );
 }
