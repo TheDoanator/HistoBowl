@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import FadeIn from '../components/FadeIn';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -176,7 +177,9 @@ export default function Players() {
                 >
                   <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
                     <h3 className="font-black text-lg text-slate-900 dark:text-white leading-tight">
-                      {p.name || '—'}
+                      <Link to={`/players/${p.id}`}>
+                        {p.name}
+                      </Link>
                     </h3>
                   </div>
 
@@ -260,7 +263,9 @@ export default function Players() {
                   paginatedPlayers.map((p) => (
                     <tr key={p.id} className="border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors duration-300 ease-out h-16 group">
                       <td className="pl-6 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">
-                        {p.name || '—'}
+                        <Link to={`/players/${p.id}`}>
+                          {p.name}
+                        </Link>
                       </td>
                       <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{p.hometown || '—'}</td>
                       <td className="px-4 py-4 font-bold text-orange-600 dark:text-orange-400">{p.titles || '0'}</td>
