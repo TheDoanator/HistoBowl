@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Import
 import Home from './pages/Home';
 import Tournaments from './pages/Tournaments';
 import Players  from './pages/Players';
+import PlayerDetail from './pages/PlayerDetail';
 import AlphaBanner from './components/AlphaBanner';
 
 function App() {
@@ -168,6 +169,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/tournaments" element={<Tournaments />} />
             <Route path="/players" element={<Players />} />
+            <Route path="/players/:id" element={<PlayerDetail />} />
           </Routes>
         </main>
 
