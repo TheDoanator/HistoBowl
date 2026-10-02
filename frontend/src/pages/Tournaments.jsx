@@ -5,6 +5,8 @@ import {
   ArrowUp,
   ArrowUpDown,
   Calendar,
+  ChevronLeft,
+  ChevronRight,
   DollarSign,
   Droplet,
   MapPin,
@@ -12,6 +14,8 @@ import {
   Trophy,
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+
+const TOURNAMENTS_PER_PAGE = 30;
 
 function getPrizeMoneySortValue(value) {
   const amountMatch = String(value).trim().match(/^\$\s*([0-9][0-9,]*(?:\.[0-9]+)?)/);
@@ -46,6 +50,31 @@ function getTournamentSortValue(tournament, key) {
   return Number.isNaN(timestamp) ? null : timestamp;
 }
 
+function getPaginationItems(currentPage, totalPages) {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  let visiblePages;
+
+  if (currentPage <= 4) {
+    visiblePages = [1, 2, 3, 4, 5, totalPages];
+  } else if (currentPage >= totalPages - 3) {
+    visiblePages = [1, totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+  } else {
+    visiblePages = [1, currentPage - 1, currentPage, currentPage + 1, totalPages];
+  }
+
+  return visiblePages.reduce((items, page, index) => {
+    if (index > 0 && page - visiblePages[index - 1] > 1) {
+      items.push(`ellipsis-${page}`);
+    }
+
+    items.push(page);
+    return items;
+  }, []);
+}
+
 export default function Tournaments() {
   // 1. DATA FETCHING (React Query)
   const { data: tournaments, isLoading, isError, error } = useQuery({
@@ -65,6 +94,7 @@ export default function Tournaments() {
   const [isSeasonOpen, setIsSeasonOpen] = useState(false);
   const [showColumnToggle, setShowColumnToggle] = useState(false);
   const [sortConfig, setSortConfig] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [visibleColumns, setVisibleColumns] = useState({
     finals_date: true,
     location: true,
@@ -117,6 +147,13 @@ export default function Tournaments() {
         return effectiveSortConfig.direction === 'ascending' ? comparison : -comparison;
       })
     : filteredTournaments;
+  const totalTournaments = sortedTournaments.length;
+  const totalPages = Math.ceil(totalTournaments / TOURNAMENTS_PER_PAGE);
+  const activePage = Math.min(currentPage, Math.max(totalPages, 1));
+  const pageStartIndex = (activePage - 1) * TOURNAMENTS_PER_PAGE;
+  const pageEndIndex = Math.min(pageStartIndex + TOURNAMENTS_PER_PAGE, totalTournaments);
+  const paginatedTournaments = sortedTournaments.slice(pageStartIndex, pageEndIndex);
+  const paginationItems = getPaginationItems(activePage, totalPages);
 
   const handleSort = (key) => {
     setSortConfig({
@@ -125,6 +162,7 @@ export default function Tournaments() {
         ? 'descending'
         : 'ascending',
     });
+    setCurrentPage(1);
   };
 
   const DateSortIcon = effectiveSortConfig.key === 'finals_date'
@@ -216,6 +254,7 @@ export default function Tournaments() {
                     <button
                       onClick={() => {
                         setSelectedSeason('ALL');
+                        setCurrentPage(1);
                         setIsSeasonOpen(false);
                       }}
                       className={`w-full text-left px-3 py-2 rounded-lg text-xs font-black transition-colors cursor-pointer ${
@@ -232,6 +271,7 @@ export default function Tournaments() {
                         key={season}
                         onClick={() => {
                           setSelectedSeason(season);
+                          setCurrentPage(1);
                           setIsSeasonOpen(false);
                         }}
                         className={`w-full text-left px-3 py-2 rounded-lg text-xs font-black transition-colors cursor-pointer ${
@@ -257,7 +297,7 @@ export default function Tournaments() {
             {filteredTournaments.length === 0 ? (
               <div className="text-center py-12 text-slate-400 italic bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800">No records found.</div>
             ) : (
-              sortedTournaments.map((t) => (
+              paginatedTournaments.map((t) => (
                 <div key={t.id} className="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 flex flex-col gap-3">
                   <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
                     <h3 className="font-black text-lg text-slate-900 dark:text-white leading-tight">{t.event}</h3>
@@ -369,7 +409,7 @@ export default function Tournaments() {
                     <td colSpan="5" className="text-center py-12 text-slate-400 italic">No records found.</td>
                   </tr>
                 ) : (
-                  sortedTournaments.map((t) => (
+                  paginatedTournaments.map((t) => (
                     <tr key={t.id} className="border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors duration-300 ease-out h-16 group">
                       <td className="pl-6 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">{t.event}</td>
                       {visibleColumns.finals_date && <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{t.finals_date}</td>}
@@ -382,6 +422,71 @@ export default function Tournaments() {
                 )}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {tournaments && filteredTournaments.length > 0 && (
+          <div className="flex flex-col items-center gap-3 mt-6 px-1 sm:px-2 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6">
+            <p className="text-center text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 lg:justify-self-start lg:text-left">
+              Showing <span className="font-black text-slate-700 dark:text-slate-200">{pageStartIndex + 1}</span> to{' '}
+              <span className="font-black text-slate-700 dark:text-slate-200">{pageEndIndex}</span> of{' '}
+              <span className="font-black text-slate-700 dark:text-slate-200">{totalTournaments}</span> tournaments
+            </p>
+
+            <nav aria-label="Tournaments pagination" className="flex flex-wrap items-center justify-center gap-1 sm:gap-2 lg:justify-self-center">
+              <button
+                type="button"
+                onClick={() => setCurrentPage(activePage - 1)}
+                disabled={activePage === 1}
+                aria-label="Go to previous page"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border bg-white border-slate-200 text-slate-700 shadow-sm transition-colors cursor-pointer hover:bg-slate-50 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-slate-900/60 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:border-slate-600"
+              >
+                <ChevronLeft aria-hidden="true" className="w-4 h-4 mx-auto" />
+              </button>
+
+              {paginationItems.map((item) => {
+                if (typeof item === 'string') {
+                  return (
+                    <span
+                      key={item}
+                      aria-hidden="true"
+                      className="w-5 text-center text-sm font-bold text-slate-400 dark:text-slate-500"
+                    >
+                      ...
+                    </span>
+                  );
+                }
+
+                const isActive = item === activePage;
+
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => setCurrentPage(item)}
+                    aria-label={`Go to page ${item}`}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg border text-sm font-black shadow-sm transition-colors cursor-pointer ${
+                      isActive
+                        ? 'bg-orange-600 border-orange-600 text-white dark:bg-orange-600 dark:border-orange-500'
+                        : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 dark:bg-slate-900/60 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:border-slate-600'
+                    }`}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+
+              <button
+                type="button"
+                onClick={() => setCurrentPage(activePage + 1)}
+                disabled={activePage === totalPages}
+                aria-label="Go to next page"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border bg-white border-slate-200 text-slate-700 shadow-sm transition-colors cursor-pointer hover:bg-slate-50 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-slate-900/60 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:border-slate-600"
+              >
+                <ChevronRight aria-hidden="true" className="w-4 h-4 mx-auto" />
+              </button>
+            </nav>
           </div>
         )}
       </div>
