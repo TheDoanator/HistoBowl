@@ -91,7 +91,7 @@ export default function Tournaments() {
   });
 
   // 2. UI STATE VARIABLES
-  const [selectedSeason, setSelectedSeason] = useState('');
+  const [selectedSeason, setSelectedSeason] = useState('ALL');
   const [isSeasonOpen, setIsSeasonOpen] = useState(false);
   const [showColumnToggle, setShowColumnToggle] = useState(false);
   const [sortConfig, setSortConfig] = useState(null);
