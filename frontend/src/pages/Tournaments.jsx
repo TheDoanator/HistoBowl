@@ -10,6 +10,7 @@ import {
   DollarSign,
   Droplet,
   MapPin,
+  Search,
   Settings2,
   Trophy,
 } from 'lucide-react';
@@ -95,6 +96,7 @@ export default function Tournaments() {
   const [showColumnToggle, setShowColumnToggle] = useState(false);
   const [sortConfig, setSortConfig] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
   const [visibleColumns, setVisibleColumns] = useState({
     finals_date: true,
     location: true,
@@ -120,12 +122,17 @@ export default function Tournaments() {
     direction: 'ascending',
   };
 
-  // Filter based on the activeSeason instead
-  const filteredTournaments = tournaments
+  const seasonFilteredTournaments = tournaments
     ? activeSeason === 'ALL'
       ? tournaments
       : tournaments.filter(t => t.season === activeSeason)
     : [];
+  const normalizedSearchQuery = searchQuery.trim().toLocaleLowerCase();
+  const filteredTournaments = seasonFilteredTournaments.filter((tournament) =>
+    [tournament.event, tournament.city].some((value) =>
+      String(value ?? '').toLocaleLowerCase().includes(normalizedSearchQuery)
+    )
+  );
   const sortedTournaments = effectiveSortConfig.key
     ? [...filteredTournaments].sort((tournamentA, tournamentB) => {
         const valueA = getTournamentSortValue(tournamentA, effectiveSortConfig.key);
@@ -192,7 +199,7 @@ export default function Tournaments() {
             </p>*/}
           </div>
 
-          <div className="mt-6 md:mt-0 flex items-center gap-3">
+          <div className="mt-6 md:mt-0 flex w-full flex-wrap items-center gap-3 sm:w-auto md:justify-end">
             
             {/* COLUMNS VISIBILITY CONFIGURATOR DROPDOWN */}
             <div className="relative">
@@ -286,6 +293,25 @@ export default function Tournaments() {
                   </div>
                 </>
               )}
+            </div>
+
+            <div className="relative min-w-0 basis-full sm:w-80 sm:basis-auto sm:flex-none">
+              <label htmlFor="tournament-search" className="sr-only">Search tournaments by event or location</label>
+              <Search
+                aria-hidden="true"
+                className="absolute left-3 top-1/2 w-4 h-4 -translate-y-1/2 text-slate-400 pointer-events-none"
+              />
+              <input
+                id="tournament-search"
+                type="search"
+                value={searchQuery}
+                onChange={(event) => {
+                  setSearchQuery(event.target.value);
+                  setCurrentPage(1);
+                }}
+                placeholder="Search tournaments..."
+                className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm font-medium text-slate-800 shadow-sm outline-none transition-colors duration-300 ease-out placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500"
+              />
             </div>
           </div>
         </div>
