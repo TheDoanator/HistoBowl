@@ -64,9 +64,9 @@ export default function Tournaments() {
   const [selectedSeason, setSelectedSeason] = useState('');
   const [isSeasonOpen, setIsSeasonOpen] = useState(false);
   const [showColumnToggle, setShowColumnToggle] = useState(false);
-  const [sortConfig, setSortConfig] = useState({ key: 'airdate', direction: 'descending' });
+  const [sortConfig, setSortConfig] = useState({ key: 'finals_date', direction: 'descending' });
   const [visibleColumns, setVisibleColumns] = useState({
-    airdate: true,
+    finals_date: true,
     location: true,
     winner: true,
     oil: false,
@@ -123,7 +123,7 @@ export default function Tournaments() {
     }));
   };
 
-  const DateSortIcon = sortConfig.key === 'airdate'
+  const DateSortIcon = sortConfig.key === 'finals_date'
     ? sortConfig.direction === 'ascending' ? ArrowUp : ArrowDown
     : ArrowUpDown;
   const PrizeSortIcon = sortConfig.key === 'prize_money'
@@ -269,12 +269,12 @@ export default function Tournaments() {
                         </div>
                       </div>
                     )}
-                    {visibleColumns.airdate && (
+                    {visibleColumns.finals_date && (
                       <div className="flex items-start gap-2">
                         <Calendar className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
                         <div>
-                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Airdate</p>
-                          <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">{t.airdate}</p>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Finals Date</p>
+                          <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">{t.finals_date}</p>
                         </div>
                       </div>
                     )}
@@ -318,20 +318,20 @@ export default function Tournaments() {
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 text-[10px] font-black uppercase tracking-widest text-slate-400 h-12 transition-colors duration-300 ease-out">
                   <th className="pl-6 py-3">Event</th>
-                  {visibleColumns.airdate && (
+                  {visibleColumns.finals_date && (
                     <th
                       scope="col"
-                      aria-sort={sortConfig.key === 'airdate' ? sortConfig.direction : 'none'}
+                      aria-sort={sortConfig.key === 'finals_date' ? sortConfig.direction : 'none'}
                       className="px-4 py-3"
                     >
                       <button
                         type="button"
-                        onClick={() => handleSort('airdate')}
+                        onClick={() => handleSort('finals_date')}
                         className={`inline-flex items-center gap-1.5 uppercase transition-colors cursor-pointer hover:text-orange-600 focus-visible:outline-none focus-visible:text-orange-600 ${
-                          sortConfig.key === 'airdate' ? 'text-orange-600 dark:text-orange-400' : ''
+                          sortConfig.key === 'finals_date' ? 'text-orange-600 dark:text-orange-400' : ''
                         }`}
                       >
-                        <span>Airdate</span>
+                        <span>Finals Date</span>
                         <DateSortIcon aria-hidden="true" className="w-3.5 h-3.5" />
                       </button>
                     </th>
@@ -368,7 +368,7 @@ export default function Tournaments() {
                   sortedTournaments.map((t) => (
                     <tr key={t.id} className="border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors duration-300 ease-out h-16 group">
                       <td className="pl-6 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">{t.event}</td>
-                      {visibleColumns.airdate && <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{t.airdate}</td>}
+                      {visibleColumns.finals_date && <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{t.finals_date}</td>}
                       {visibleColumns.location && <td className="px-4 py-4 text-slate-600 dark:text-slate-400">{t.city}</td>}
                       {visibleColumns.winner && <td className="px-4 py-4 font-bold text-orange-600 dark:text-orange-400">{t.winner}</td>}
                       {visibleColumns.oil && <td className="px-4 py-4 text-slate-600 dark:text-slate-400 italic text-xs">{t.oil || 'N/A'}</td>}
