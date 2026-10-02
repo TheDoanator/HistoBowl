@@ -9,16 +9,72 @@ import {
   DollarSign,
   MapPin,
   Search,
+  Settings2,
   Trophy,
 } from 'lucide-react';
 
 const PLAYERS_PER_PAGE = 20;
 const PLAYER_COLUMNS = [
   { key: 'name', label: 'NAME', className: 'pl-6 pr-4 py-3' },
-  { key: 'hometown', label: 'HOMETOWN', className: 'px-4 py-3' },
-  { key: 'titles', label: 'TITLES', className: 'px-4 py-3' },
-  { key: 'earnings', label: 'EARNINGS', className: 'px-4 py-3' },
+  { key: 'hometown', label: 'HOMETOWN', optional: true, defaultVisible: true, className: 'px-4 py-3' },
+  { key: 'titles', label: 'TITLES', optional: true, defaultVisible: true, className: 'px-4 py-3' },
+  { key: 'major_titles', label: 'MAJOR TITLES', optional: true, defaultVisible: true, className: 'px-4 py-3' },
+  { key: 'earnings', label: 'EARNINGS', optional: true, defaultVisible: true, className: 'px-4 py-3' },
+  { key: 'currently_active', label: 'CURRENTLY ACTIVE', optional: true, className: 'px-4 py-3' },
+  { key: 'handedness', label: 'HANDEDNESS', optional: true, className: 'px-4 py-3' },
+  { key: 'birthdate', label: 'BIRTHDATE', optional: true, className: 'px-4 py-3' },
+  { key: 'first_season', label: 'FIRST SEASON', optional: true, className: 'px-4 py-3' },
+  { key: 'last_season', label: 'LAST SEASON', optional: true, className: 'px-4 py-3' },
 ];
+const OPTIONAL_PLAYER_COLUMNS = PLAYER_COLUMNS.filter((column) => column.optional);
+const ADDITIONAL_PLAYER_COLUMNS = OPTIONAL_PLAYER_COLUMNS.filter((column) => !column.defaultVisible);
+
+function getActiveStatus(value) {
+  if (value === null || value === undefined || value === '') return '—';
+
+  const normalizedValue = String(value).trim().toLocaleLowerCase();
+  return ['true', '1', 'yes', 'active'].includes(normalizedValue) ? 'Active' : 'Inactive';
+}
+
+function formatBirthdate(value) {
+  if (value === null || value === undefined || value === '') return '—';
+
+  const dateText = String(value).trim();
+  const dateOnlyMatch = dateText.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  const date = dateOnlyMatch
+    ? new Date(Date.UTC(
+        Number(dateOnlyMatch[1]),
+        Number(dateOnlyMatch[2]) - 1,
+        Number(dateOnlyMatch[3]),
+      ))
+    : new Date(dateText);
+
+  if (Number.isNaN(date.getTime())) return dateText;
+
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
+function formatNumericValue(value) {
+  if (value === null || value === undefined || value === '') return '—';
+
+  const number = Number(value);
+  return Number.isNaN(number) ? '—' : number;
+}
+
+function getPlayerDisplayValue(player, key) {
+  if (key === 'currently_active') return getActiveStatus(player[key]);
+  if (key === 'birthdate') return formatBirthdate(player[key]);
+  if (['first_season', 'last_season', 'major_titles'].includes(key)) {
+    return formatNumericValue(player[key]);
+  }
+
+  return player[key] || '—';
+}
 
 function getSortValue(player, key) {
   const value = player[key];
@@ -32,9 +88,18 @@ function getSortValue(player, key) {
     return Number.isNaN(earnings) ? null : earnings;
   }
 
-  if (key === 'titles') {
+  if (['titles', 'major_titles', 'first_season', 'last_season'].includes(key)) {
     const number = Number(value);
     return Number.isNaN(number) ? null : number;
+  }
+
+  if (key === 'currently_active') {
+    return getActiveStatus(value) === 'Active' ? 1 : 0;
+  }
+
+  if (key === 'birthdate') {
+    const timestamp = Date.parse(String(value));
+    return Number.isNaN(timestamp) ? null : timestamp;
   }
 
   return String(value);
@@ -76,6 +141,10 @@ export default function Players() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: 'titles', direction: 'descending' });
+  const [showColumnToggle, setShowColumnToggle] = useState(false);
+  const [visibleColumns, setVisibleColumns] = useState(() => Object.fromEntries(
+    OPTIONAL_PLAYER_COLUMNS.map((column) => [column.key, Boolean(column.defaultVisible)]),
+  ));
 
   //Data fetching
   const { data: players, isLoading, isError, error } = useQuery({
@@ -118,6 +187,17 @@ export default function Players() {
   const pageEndIndex = Math.min(pageStartIndex + PLAYERS_PER_PAGE, totalPlayers);
   const paginatedPlayers = sortedPlayers.slice(pageStartIndex, pageEndIndex);
   const paginationItems = getPaginationItems(activePage, totalPages);
+  const displayedColumns = PLAYER_COLUMNS.filter(
+    (column) => column.key === 'name' || visibleColumns[column.key],
+  );
+  const tableMinWidth = Math.max(800, displayedColumns.length * 150);
+
+  const toggleColumn = (key) => {
+    setVisibleColumns((currentColumns) => ({
+      ...currentColumns,
+      [key]: !currentColumns[key],
+    }));
+  };
 
   const handleSort = (key) => {
     setSortConfig((currentSort) => ({
@@ -142,23 +222,59 @@ export default function Players() {
             Players
           </h1>
 
-          <div className="relative mt-6 sm:mt-0 w-full sm:w-80">
-            <label htmlFor="player-search" className="sr-only">Search players by name</label>
-            <Search
-              aria-hidden="true"
-              className="absolute left-3 top-1/2 w-4 h-4 -translate-y-1/2 text-slate-400 pointer-events-none"
-            />
-            <input
-              id="player-search"
-              type="search"
-              value={searchQuery}
-              onChange={(event) => {
-                setSearchQuery(event.target.value);
-                setCurrentPage(1);
-              }}
-              placeholder="Search players..."
-              className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm font-medium text-slate-800 shadow-sm outline-none transition-colors duration-300 ease-out placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500"
-            />
+          <div className="mt-6 sm:mt-0 flex w-full sm:w-auto items-center gap-3">
+            <div className="relative shrink-0">
+              <button
+                type="button"
+                onClick={() => setShowColumnToggle((isOpen) => !isOpen)}
+                aria-expanded={showColumnToggle}
+                className="flex items-center gap-2 px-4 py-2.5 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg shadow-sm font-bold text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
+              >
+                <Settings2 className="w-4 h-4 text-orange-500" />
+                Columns
+              </button>
+
+              {showColumnToggle && (
+                <>
+                  <div className="fixed inset-0 z-10" onClick={() => setShowColumnToggle(false)} />
+                  <div className="absolute left-0 sm:left-auto sm:right-0 mt-2 w-56 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl p-4 z-20 flex flex-col gap-3">
+                    <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest border-b border-slate-100 dark:border-slate-800 pb-2 mb-1">
+                      Visible Columns
+                    </p>
+                    {OPTIONAL_PLAYER_COLUMNS.map((column) => (
+                      <label key={column.key} className="flex items-center gap-3 text-xs font-bold uppercase tracking-wide text-slate-700 dark:text-slate-300 cursor-pointer hover:text-orange-500 transition-colors select-none">
+                        <input
+                          type="checkbox"
+                          checked={visibleColumns[column.key]}
+                          onChange={() => toggleColumn(column.key)}
+                          className="w-4 h-4 rounded text-orange-600 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 cursor-pointer accent-orange-500"
+                        />
+                        {column.label}
+                      </label>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="relative min-w-0 flex-1 sm:w-80 sm:flex-none">
+              <label htmlFor="player-search" className="sr-only">Search players by name</label>
+              <Search
+                aria-hidden="true"
+                className="absolute left-3 top-1/2 w-4 h-4 -translate-y-1/2 text-slate-400 pointer-events-none"
+              />
+              <input
+                id="player-search"
+                type="search"
+                value={searchQuery}
+                onChange={(event) => {
+                  setSearchQuery(event.target.value);
+                  setCurrentPage(1);
+                }}
+                placeholder="Search players..."
+                className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm font-medium text-slate-800 shadow-sm outline-none transition-colors duration-300 ease-out placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 dark:border-slate-800 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500"
+              />
+            </div>
           </div>
         </div>
 
@@ -184,35 +300,64 @@ export default function Players() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm">
-                    <div className="col-span-2 flex items-start gap-2">
-                      <MapPin className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Hometown</p>
-                        <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">
-                          {p.hometown || '—'}
-                        </p>
+                    {visibleColumns.hometown && (
+                      <div className="col-span-2 flex items-start gap-2">
+                        <MapPin className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Hometown</p>
+                          <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">
+                            {p.hometown || '—'}
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="flex items-start gap-2">
-                      <Trophy className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Titles</p>
-                        <p className="font-bold text-orange-600 dark:text-orange-400 text-xs">
-                          {p.titles || '0'}
-                        </p>
+                    {visibleColumns.titles && (
+                      <div className="flex items-start gap-2">
+                        <Trophy className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Titles</p>
+                          <p className="font-bold text-orange-600 dark:text-orange-400 text-xs">
+                            {p.titles || '0'}
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    )}
 
-                    <div className="col-span-2 flex items-start gap-2 pt-1">
-                      <DollarSign className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Earnings</p>
-                        <p className="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-xs">
-                          {p.earnings || '—'}
-                        </p>
+                    {visibleColumns.major_titles && (
+                      <div className="flex items-start gap-2">
+                        <Trophy className="w-4 h-4 text-orange-500 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Major Titles</p>
+                          <p className="font-bold text-orange-600 dark:text-orange-400 text-xs">
+                            {getPlayerDisplayValue(p, 'major_titles')}
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    )}
+
+                    {visibleColumns.earnings && (
+                      <div className="col-span-2 flex items-start gap-2 pt-1">
+                        <DollarSign className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Earnings</p>
+                          <p className="font-mono font-bold text-emerald-600 dark:text-emerald-400 text-xs">
+                            {p.earnings || '—'}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {ADDITIONAL_PLAYER_COLUMNS.filter((column) => visibleColumns[column.key]).map((column) => (
+                      <div key={column.key} className="flex items-start gap-2">
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">{column.label}</p>
+                          <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">
+                            {getPlayerDisplayValue(p, column.key)}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))
@@ -223,10 +368,13 @@ export default function Players() {
         {/* --- DESKTOP VIEW: TABLE (Visible on lg and up) --- */}
         {players && (
           <div className="hidden lg:block w-full overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900/40 transition-colors duration-300 ease-out">
-            <table className="w-full text-left border-collapse min-w-[800px]">
+            <table
+              className="w-full table-fixed text-left border-collapse"
+              style={{ minWidth: `${tableMinWidth}px` }}
+            >
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30 text-[10px] font-black uppercase tracking-widest text-slate-400 h-12 transition-colors duration-300 ease-out">
-                  {PLAYER_COLUMNS.map((column) => {
+                  {displayedColumns.map((column) => {
                     const isActive = sortConfig.key === column.key;
                     const SortIcon = isActive
                       ? sortConfig.direction === 'ascending' ? ArrowUp : ArrowDown
@@ -238,6 +386,7 @@ export default function Players() {
                         scope="col"
                         aria-sort={isActive ? sortConfig.direction : 'none'}
                         className={column.className}
+                        style={{ width: `${100 / displayedColumns.length}%` }}
                       >
                         <button
                           type="button"
@@ -257,19 +406,34 @@ export default function Players() {
               <tbody className="divide-y text-sm font-medium">
                 {filteredPlayers.length === 0 ? (
                   <tr>
-                    <td colSpan="4" className="text-center py-12 text-slate-400 italic">No players found.</td>
+                    <td colSpan={displayedColumns.length} className="text-center py-12 text-slate-400 italic">No players found.</td>
                   </tr>
                 ) : (
                   paginatedPlayers.map((p) => (
                     <tr key={p.id} className="border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors duration-300 ease-out h-16 group">
-                      <td className="pl-6 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">
-                        <Link to={`/players/${p.id}`} className="transition-colors duration-200 ease-out hover:text-orange-600">
-                          {p.name}
-                        </Link>
-                      </td>
-                      <td className="px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap">{p.hometown || '—'}</td>
-                      <td className="px-4 py-4 font-bold text-orange-600 dark:text-orange-400">{p.titles || '0'}</td>
-                      <td className="px-4 py-4 font-mono font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">{p.earnings || '—'}</td>
+                      {displayedColumns.map((column) => {
+                        if (column.key === 'name') {
+                          return (
+                            <td key={column.key} className="pl-6 pr-4 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">
+                              <Link to={`/players/${p.id}`} className="transition-colors duration-200 ease-out hover:text-orange-600">
+                                {p.name}
+                              </Link>
+                            </td>
+                          );
+                        }
+
+                        const cellClassName = ['titles', 'major_titles'].includes(column.key)
+                          ? 'px-4 py-4 font-bold text-orange-600 dark:text-orange-400'
+                          : column.key === 'earnings'
+                            ? 'px-4 py-4 font-mono font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap'
+                            : 'px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap';
+
+                        return (
+                          <td key={column.key} className={cellClassName}>
+                            {column.key === 'titles' ? p.titles || '0' : getPlayerDisplayValue(p, column.key)}
+                          </td>
+                        );
+                      })}
                     </tr>
                   ))
                 )}
