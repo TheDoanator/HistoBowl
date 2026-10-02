@@ -486,7 +486,7 @@ export default function Players() {
             </nav>
             <p className="min-w-0 text-center text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 lg:justify-self-end lg:text-right">
               <span className="block">Earnings reflect 2025 totals</span>
-              <span className="block">Players included from televised PBA events, 2004–2026</span>
+              <span className="block">Players included from televised PBA events, 1987-2026</span>
             </p>
           </div>
         )}
