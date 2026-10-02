@@ -119,7 +119,7 @@ export default function Tournaments() {
   const activeSeason = selectedSeason || (seasons.length > 0 ? seasons[0] : '');
   const effectiveSortConfig = sortConfig || {
     key: 'finals_date',
-    direction: 'ascending',
+    direction: activeSeason === 'ALL' ? 'descending' : 'ascending',
   };
 
   const seasonFilteredTournaments = tournaments
@@ -261,6 +261,7 @@ export default function Tournaments() {
                     <button
                       onClick={() => {
                         setSelectedSeason('ALL');
+                        setSortConfig(null);
                         setCurrentPage(1);
                         setIsSeasonOpen(false);
                       }}
@@ -278,6 +279,7 @@ export default function Tournaments() {
                         key={season}
                         onClick={() => {
                           setSelectedSeason(season);
+                          setSortConfig(null);
                           setCurrentPage(1);
                           setIsSeasonOpen(false);
                         }}
