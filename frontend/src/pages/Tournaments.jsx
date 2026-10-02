@@ -64,7 +64,7 @@ export default function Tournaments() {
   const [selectedSeason, setSelectedSeason] = useState('');
   const [isSeasonOpen, setIsSeasonOpen] = useState(false);
   const [showColumnToggle, setShowColumnToggle] = useState(false);
-  const [sortConfig, setSortConfig] = useState({ key: 'finals_date', direction: 'descending' });
+  const [sortConfig, setSortConfig] = useState(null);
   const [visibleColumns, setVisibleColumns] = useState({
     finals_date: true,
     location: true,
@@ -85,6 +85,10 @@ export default function Tournaments() {
 
   // DERIVED STATE: If they haven't clicked anything yet, just use the newest season automatically!
   const activeSeason = selectedSeason || (seasons.length > 0 ? seasons[0] : '');
+  const effectiveSortConfig = sortConfig || {
+    key: 'finals_date',
+    direction: 'ascending',
+  };
 
   // Filter based on the activeSeason instead
   const filteredTournaments = tournaments
@@ -92,13 +96,13 @@ export default function Tournaments() {
       ? tournaments
       : tournaments.filter(t => t.season === activeSeason)
     : [];
-  const sortedTournaments = sortConfig.key
+  const sortedTournaments = effectiveSortConfig.key
     ? [...filteredTournaments].sort((tournamentA, tournamentB) => {
-        const valueA = getTournamentSortValue(tournamentA, sortConfig.key);
-        const valueB = getTournamentSortValue(tournamentB, sortConfig.key);
+        const valueA = getTournamentSortValue(tournamentA, effectiveSortConfig.key);
+        const valueB = getTournamentSortValue(tournamentB, effectiveSortConfig.key);
 
         if (valueA === null && valueB === null) {
-          if (sortConfig.key !== 'prize_money') return 0;
+          if (effectiveSortConfig.key !== 'prize_money') return 0;
 
           return String(tournamentA.prize_money ?? '').localeCompare(
             String(tournamentB.prize_money ?? ''),
@@ -110,24 +114,24 @@ export default function Tournaments() {
         if (valueB === null) return -1;
 
         const comparison = valueA - valueB;
-        return sortConfig.direction === 'ascending' ? comparison : -comparison;
+        return effectiveSortConfig.direction === 'ascending' ? comparison : -comparison;
       })
     : filteredTournaments;
 
   const handleSort = (key) => {
-    setSortConfig((currentSort) => ({
+    setSortConfig({
       key,
-      direction: currentSort.key === key && currentSort.direction === 'ascending'
+      direction: effectiveSortConfig.key === key && effectiveSortConfig.direction === 'ascending'
         ? 'descending'
         : 'ascending',
-    }));
+    });
   };
 
-  const DateSortIcon = sortConfig.key === 'finals_date'
-    ? sortConfig.direction === 'ascending' ? ArrowUp : ArrowDown
+  const DateSortIcon = effectiveSortConfig.key === 'finals_date'
+    ? effectiveSortConfig.direction === 'ascending' ? ArrowUp : ArrowDown
     : ArrowUpDown;
-  const PrizeSortIcon = sortConfig.key === 'prize_money'
-    ? sortConfig.direction === 'ascending' ? ArrowUp : ArrowDown
+  const PrizeSortIcon = effectiveSortConfig.key === 'prize_money'
+    ? effectiveSortConfig.direction === 'ascending' ? ArrowUp : ArrowDown
     : ArrowUpDown;
 
   // 4. LOADING & ERROR SCREENS
@@ -321,14 +325,14 @@ export default function Tournaments() {
                   {visibleColumns.finals_date && (
                     <th
                       scope="col"
-                      aria-sort={sortConfig.key === 'finals_date' ? sortConfig.direction : 'none'}
+                      aria-sort={effectiveSortConfig.key === 'finals_date' ? effectiveSortConfig.direction : 'none'}
                       className="px-4 py-3"
                     >
                       <button
                         type="button"
                         onClick={() => handleSort('finals_date')}
                         className={`inline-flex items-center gap-1.5 uppercase transition-colors cursor-pointer hover:text-orange-600 focus-visible:outline-none focus-visible:text-orange-600 ${
-                          sortConfig.key === 'finals_date' ? 'text-orange-600 dark:text-orange-400' : ''
+                          effectiveSortConfig.key === 'finals_date' ? 'text-orange-600 dark:text-orange-400' : ''
                         }`}
                       >
                         <span>Finals Date</span>
@@ -342,14 +346,14 @@ export default function Tournaments() {
                   {visibleColumns.prize_money && (
                     <th
                       scope="col"
-                      aria-sort={sortConfig.key === 'prize_money' ? sortConfig.direction : 'none'}
+                      aria-sort={effectiveSortConfig.key === 'prize_money' ? effectiveSortConfig.direction : 'none'}
                       className="px-4 py-3"
                     >
                       <button
                         type="button"
                         onClick={() => handleSort('prize_money')}
                         className={`inline-flex items-center gap-1.5 uppercase transition-colors cursor-pointer hover:text-orange-600 focus-visible:outline-none focus-visible:text-orange-600 ${
-                          sortConfig.key === 'prize_money' ? 'text-orange-600 dark:text-orange-400' : ''
+                          effectiveSortConfig.key === 'prize_money' ? 'text-orange-600 dark:text-orange-400' : ''
                         }`}
                       >
                         <span>Prize Money</span>
