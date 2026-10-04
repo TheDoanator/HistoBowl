@@ -20,14 +20,8 @@ const PLAYER_COLUMNS = [
   { key: 'titles', label: 'TITLES', optional: true, defaultVisible: true, className: 'px-4 py-3' },
   { key: 'major_titles', label: 'MAJOR TITLES', optional: true, defaultVisible: true, className: 'px-4 py-3' },
   { key: 'earnings', label: 'EARNINGS', optional: true, defaultVisible: true, className: 'px-4 py-3' },
-  { key: 'currently_active', label: 'CURRENTLY ACTIVE', optional: true, className: 'px-4 py-3' },
-  { key: 'handedness', label: 'HANDEDNESS', optional: true, className: 'px-4 py-3' },
-  { key: 'birthdate', label: 'BIRTHDATE', optional: true, className: 'px-4 py-3' },
-  { key: 'first_season', label: 'FIRST SEASON', optional: true, className: 'px-4 py-3' },
-  { key: 'last_season', label: 'LAST SEASON', optional: true, className: 'px-4 py-3' },
 ];
 const OPTIONAL_PLAYER_COLUMNS = PLAYER_COLUMNS.filter((column) => column.optional);
-const ADDITIONAL_PLAYER_COLUMNS = OPTIONAL_PLAYER_COLUMNS.filter((column) => !column.defaultVisible);
 
 function getActiveStatus(value) {
   if (value === null || value === undefined || value === '') return '—';
@@ -348,16 +342,6 @@ export default function Players() {
                       </div>
                     )}
 
-                    {ADDITIONAL_PLAYER_COLUMNS.filter((column) => visibleColumns[column.key]).map((column) => (
-                      <div key={column.key} className="flex items-start gap-2">
-                        <div>
-                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">{column.label}</p>
-                          <p className="font-medium text-slate-700 dark:text-slate-300 text-xs">
-                            {getPlayerDisplayValue(p, column.key)}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
                   </div>
                 </div>
               ))
