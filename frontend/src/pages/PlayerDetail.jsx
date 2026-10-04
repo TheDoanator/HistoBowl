@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import FadeIn from '../components/FadeIn';
 
 export default function PlayerDetail() {
@@ -26,13 +26,6 @@ return (
       aria-labelledby="player-name"
       className="w-full max-w-[90%] xl:max-w-[85%] mx-auto -mt-6 sm:-mt-8 px-2 sm:px-4 pb-4 sm:pb-6 lg:pb-8"
     >
-      <Link
-        to="/players"
-        className="inline-flex mb-5 sm:mb-6 text-xs sm:text-sm font-black italic tracking-[0.16em] text-slate-500 dark:text-slate-400 uppercase transition-colors duration-200 ease-out hover:text-orange-600 dark:hover:text-orange-600"
-      >
-        ← BACK TO PLAYERS
-      </Link>
-
       <div className="flex items-center gap-3 mb-6 sm:mb-8">
         <span aria-hidden="true" className="h-0.5 w-10 sm:w-14 bg-orange-600" />
         <p className="text-[10px] sm:text-xs font-black tracking-[0.22em] text-orange-600 uppercase">
