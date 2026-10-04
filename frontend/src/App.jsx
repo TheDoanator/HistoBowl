@@ -169,7 +169,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/tournaments" element={<Tournaments />} />
             <Route path="/players" element={<Players />} />
-            <Route path="/players/:id" element={<PlayerDetail />} />
+            <Route path="/players/:slug" element={<PlayerDetail />} />
           </Routes>
         </main>
 

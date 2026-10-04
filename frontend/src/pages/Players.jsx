@@ -311,7 +311,7 @@ export default function Players() {
                 >
                   <div className="border-b border-slate-100 dark:border-slate-800 pb-3">
                     <h3 className="font-black text-lg text-slate-900 dark:text-white leading-tight">
-                      <Link to={`/players/${p.id}`} className="transition-colors duration-200 ease-out hover:text-orange-600">
+                      <Link to={`/players/${p.slug}`} className="transition-colors duration-200 ease-out hover:text-orange-600">
                         {p.name}
                       </Link>
                     </h3>
@@ -438,7 +438,7 @@ export default function Players() {
                         if (column.key === 'name') {
                           return (
                             <td key={column.key} className="pl-6 pr-4 py-4 font-black text-slate-900 dark:text-white max-w-[250px]">
-                              <Link to={`/players/${p.id}`} className="transition-colors duration-200 ease-out hover:text-orange-600">
+                              <Link to={`/players/${p.slug}`} className="transition-colors duration-200 ease-out hover:text-orange-600">
                                 {p.name}
                               </Link>
                             </td>

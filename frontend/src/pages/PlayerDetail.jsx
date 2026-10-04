@@ -3,16 +3,16 @@ import { useParams } from 'react-router-dom';
 import FadeIn from '../components/FadeIn';
 
 export default function PlayerDetail() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [player, setPlayer] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/players/${id}`)
+    fetch(`http://localhost:8000/api/players/${slug}`)
       .then((res) => res.json())
       .then((data) => {
         setPlayer(data);
       });
-  }, [id]);
+  }, [slug]);
 
   console.log(player);
 

@@ -41,10 +41,10 @@ app.get('/api/players', (req, res) => {
   })
 })
 
-app.get('/api/players/:id', (req, res) => {
-  const sql = 'SELECT * FROM players WHERE id = ?';
+app.get('/api/players/:slug', (req, res) => {
+  const sql = 'SELECT * FROM players WHERE slug = ?';
 
-  db.get(sql, [req.params.id], (err, row) => {
+  db.get(sql, [req.params.slug], (err, row) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
