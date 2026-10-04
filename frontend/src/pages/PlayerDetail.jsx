@@ -17,8 +17,8 @@ export default function PlayerDetail() {
   console.log(player);
 
   if (!player) {
-  return <div>Loading...</div>;
-}
+    return <div className="text-white dark:text-slate-400 text-center mt-10">Loading...</div>;
+  }
 
 return (
   <FadeIn>
