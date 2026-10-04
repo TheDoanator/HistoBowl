@@ -14,8 +14,10 @@ import {
 } from 'lucide-react';
 
 const PLAYERS_PER_PAGE = 20;
+const COUNTRY_DISPLAY_NAMES = new Intl.DisplayNames(['en'], { type: 'region' });
 const PLAYER_COLUMNS = [
   { key: 'name', label: 'NAME', className: 'pl-6 pr-4 py-3' },
+  { key: 'country', label: 'COUNTRY', optional: true, defaultVisible: true, className: 'px-0 py-3 text-center' },
   { key: 'hometown', label: 'HOMETOWN', optional: true, defaultVisible: true, className: 'px-4 py-3' },
   { key: 'titles', label: 'TITLES', optional: true, defaultVisible: true, className: 'px-4 py-3' },
   { key: 'major_titles', label: 'MAJOR TITLES', optional: true, defaultVisible: true, className: 'px-4 py-3' },
@@ -60,7 +62,21 @@ function formatNumericValue(value) {
   return Number.isNaN(number) ? '—' : number;
 }
 
+function formatCountryFlag(value) {
+  const countryCode = String(value ?? '').trim().toUpperCase();
+
+  if (!/^[A-Z]{2}$/.test(countryCode)) return '—';
+
+  const countryName = COUNTRY_DISPLAY_NAMES.of(countryCode);
+  if (!countryName || countryName === countryCode || countryName === 'Unknown Region') return '—';
+
+  return String.fromCodePoint(
+    ...Array.from(countryCode, (character) => character.codePointAt(0) + 127397),
+  );
+}
+
 function getPlayerDisplayValue(player, key) {
+  if (key === 'country') return formatCountryFlag(player[key]);
   if (key === 'currently_active') return getActiveStatus(player[key]);
   if (key === 'birthdate') return formatBirthdate(player[key]);
   if (['first_season', 'last_season', 'major_titles'].includes(key)) {
@@ -294,6 +310,17 @@ export default function Players() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm">
+                    {visibleColumns.country && (
+                      <div className="col-span-2 flex items-center gap-2">
+                        <div>
+                          <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Country</p>
+                          <p className="inline-flex items-center text-lg leading-none">
+                            {formatCountryFlag(p.country)}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
                     {visibleColumns.hometown && (
                       <div className="col-span-2 flex items-start gap-2">
                         <MapPin className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
@@ -370,12 +397,16 @@ export default function Players() {
                         scope="col"
                         aria-sort={isActive ? sortConfig.direction : 'none'}
                         className={column.className}
-                        style={{ width: `${100 / displayedColumns.length}%` }}
+                        style={column.key === 'country'
+                          ? { width: '80px' }
+                          : undefined}
                       >
                         <button
                           type="button"
                           onClick={() => handleSort(column.key)}
-                          className={`group/sort inline-flex items-center gap-1.5 transition-colors cursor-pointer hover:text-orange-600 focus-visible:outline-none focus-visible:text-orange-600 ${
+                          className={`group/sort inline-flex items-center transition-colors cursor-pointer hover:text-orange-600 focus-visible:outline-none focus-visible:text-orange-600 ${
+                            column.key === 'country' ? 'w-full justify-center gap-1' : 'gap-1.5'
+                          } ${
                             isActive ? 'text-orange-600 dark:text-orange-400' : ''
                           }`}
                         >
@@ -406,11 +437,13 @@ export default function Players() {
                           );
                         }
 
-                        const cellClassName = ['titles', 'major_titles'].includes(column.key)
-                          ? 'px-4 py-4 font-bold text-orange-600 dark:text-orange-400'
-                          : column.key === 'earnings'
-                            ? 'px-4 py-4 font-mono font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap'
-                            : 'px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap';
+                        const cellClassName = column.key === 'country'
+                          ? 'px-0 py-4 text-center align-middle text-2xl leading-none whitespace-nowrap'
+                          : ['titles', 'major_titles'].includes(column.key)
+                            ? 'px-4 py-4 font-bold text-orange-600 dark:text-orange-400'
+                            : column.key === 'earnings'
+                              ? 'px-4 py-4 font-mono font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap'
+                              : 'px-4 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap';
 
                         return (
                           <td key={column.key} className={cellClassName}>
