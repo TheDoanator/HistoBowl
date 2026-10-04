@@ -24,7 +24,7 @@ return (
   <FadeIn>
     <section
       aria-labelledby="player-name"
-      className="w-full max-w-[90%] xl:max-w-[85%] mx-auto -mt-6 sm:-mt-8 px-2 sm:px-4 pb-4 sm:pb-6 lg:pb-8"
+      className="w-full max-w-[90%] xl:max-w-[85%] mx-auto px-2 sm:px-4 pb-4 sm:pb-6 lg:pb-8"
     >
       <div className="flex items-center gap-3 mb-6 sm:mb-8">
         <span aria-hidden="true" className="h-0.5 w-10 sm:w-14 bg-orange-600" />
