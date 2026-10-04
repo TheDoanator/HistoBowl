@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 
 const PLAYERS_PER_PAGE = 20;
-const COUNTRY_DISPLAY_NAMES = new Intl.DisplayNames(['en'], { type: 'region' });
 const PLAYER_COLUMNS = [
   { key: 'name', label: 'NAME', className: 'pl-6 pr-4 py-3' },
   { key: 'country', label: 'COUNTRY', optional: true, defaultVisible: true, className: 'px-0 py-3 text-center' },
@@ -62,21 +61,30 @@ function formatNumericValue(value) {
   return Number.isNaN(number) ? '—' : number;
 }
 
-function formatCountryFlag(value) {
-  const countryCode = String(value ?? '').trim().toUpperCase();
+function CountryFlag({ country }) {
+  const countryCode = String(country ?? '').trim().toUpperCase();
 
   if (!/^[A-Z]{2}$/.test(countryCode)) return '—';
 
-  const countryName = COUNTRY_DISPLAY_NAMES.of(countryCode);
-  if (!countryName || countryName === countryCode || countryName === 'Unknown Region') return '—';
+  const flagCode = countryCode === 'UK' ? 'gb' : countryCode.toLowerCase();
 
-  return String.fromCodePoint(
-    ...Array.from(countryCode, (character) => character.codePointAt(0) + 127397),
+  return (
+    <span className="inline-flex h-5 w-7 items-center justify-center">
+      <img
+        src={`/flags/${flagCode}.svg`}
+        alt={`${countryCode} flag`}
+        className="block h-auto max-h-5 w-7 object-contain"
+        onError={(event) => {
+          event.currentTarget.hidden = true;
+          event.currentTarget.nextElementSibling.hidden = false;
+        }}
+      />
+      <span hidden aria-hidden="true">—</span>
+    </span>
   );
 }
 
 function getPlayerDisplayValue(player, key) {
-  if (key === 'country') return formatCountryFlag(player[key]);
   if (key === 'currently_active') return getActiveStatus(player[key]);
   if (key === 'birthdate') return formatBirthdate(player[key]);
   if (['first_season', 'last_season', 'major_titles'].includes(key)) {
@@ -314,8 +322,8 @@ export default function Players() {
                       <div className="col-span-2 flex items-center gap-2">
                         <div>
                           <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Country</p>
-                          <p className="inline-flex items-center text-lg leading-none">
-                            {formatCountryFlag(p.country)}
+                          <p className="inline-flex items-center leading-none">
+                            <CountryFlag key={p.country} country={p.country} />
                           </p>
                         </div>
                       </div>
@@ -447,7 +455,11 @@ export default function Players() {
 
                         return (
                           <td key={column.key} className={cellClassName}>
-                            {column.key === 'titles' ? p.titles || '0' : getPlayerDisplayValue(p, column.key)}
+                            {column.key === 'country'
+                              ? <CountryFlag key={p.country} country={p.country} />
+                              : column.key === 'titles'
+                                ? p.titles || '0'
+                                : getPlayerDisplayValue(p, column.key)}
                           </td>
                         );
                       })}
